@@ -41,43 +41,44 @@ const usePlatformSpecificSetup = Platform.select({
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "index",
 };
+
+const HeaderTitle = ({ children }: { children: string }) => (
+  <Text className="text-xl font-semibold">{toOptions(children)}</Text>
+);
 
 export default function RootLayout() {
   usePlatformSpecificSetup();
   const { isDarkColorScheme } = useColorScheme();
+
+  const screenOptions = {
+    headerBackTitle: "Back",
+    headerRight: ThemeToggle,
+    headerTitle: HeaderTitle,
+  };
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
-          {/* <Stack>
+          <Stack initialRouteName="index" screenOptions={screenOptions}>
             <Stack.Screen
               name="index"
               options={{
-                title: "Starter Base",
-                headerRight: () => <ThemeToggle />,
+                headerShown: false,
               }}
             />
-          </Stack> */}
-          <Stack
-            initialRouteName="(tabs)"
-            screenOptions={{
-              headerBackTitle: "Back",
-              headerTitle(props) {
-                return (
-                  <Text className="text-xl font-semibold">
-                    {toOptions(props.children)}
-                  </Text>
-                );
-              },
-              headerRight: () => <ThemeToggle />,
-            }}
-          >
             <Stack.Screen
               name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+
+            <Stack.Screen
+              name="(onboarding)"
               options={{
                 headerShown: false,
               }}

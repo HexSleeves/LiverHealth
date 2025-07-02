@@ -3,8 +3,10 @@ import { View, ScrollView, Alert, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "~/components/ui/text";
 import { Switch } from "~/components/ui/switch";
-import { SettingsRow } from "~/components/ui/settings-row";
+import { SettingsRow } from "~/components/settings-row";
 import { useColorScheme } from "~/lib/useColorScheme";
+import { useOnboardingStatus } from "~/hooks/useOnboardingStatus";
+import { router } from "expo-router";
 
 // Icons
 import { CircleUserRound } from "~/lib/icons/CircleUserRound";
@@ -42,6 +44,7 @@ function SettingsSection({
 
 export default function SettingsScreen() {
   const { isDarkColorScheme, setColorScheme } = useColorScheme();
+  const { resetOnboarding } = useOnboardingStatus();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [reminderNotifications, setReminderNotifications] =
     React.useState(true);
@@ -53,7 +56,7 @@ export default function SettingsScreen() {
     Alert.alert(
       "Profile Settings",
       "Profile management will be available in a future update.",
-      [{ text: "OK" }],
+      [{ text: "OK" }]
     );
   };
 
@@ -74,7 +77,7 @@ export default function SettingsScreen() {
         { text: "Cancel", style: "cancel" },
         { text: "Export PDF", onPress: () => console.log("Export PDF") },
         { text: "Export CSV", onPress: () => console.log("Export CSV") },
-      ],
+      ]
     );
   };
 
@@ -82,7 +85,7 @@ export default function SettingsScreen() {
     Alert.alert(
       "Privacy Policy",
       "Your privacy is our top priority. This app follows HIPAA compliance guidelines:\n\n• Health data is encrypted and stored locally\n• No personal information shared without consent\n• You control your data at all times\n• Regular security audits performed",
-      [{ text: "OK" }],
+      [{ text: "OK" }]
     );
   };
 
@@ -97,7 +100,7 @@ export default function SettingsScreen() {
           onPress: () => console.log("Storage info"),
         },
         { text: "Clear Cache", onPress: () => console.log("Clear cache") },
-      ],
+      ]
     );
   };
 
@@ -112,7 +115,7 @@ export default function SettingsScreen() {
           text: "Contact Support",
           onPress: () => Linking.openURL("mailto:support@liverhealth.app"),
         },
-      ],
+      ]
     );
   };
 
@@ -123,7 +126,7 @@ export default function SettingsScreen() {
       [
         { text: "Cancel", style: "cancel" },
         { text: "Rate App", onPress: () => console.log("Open app store") },
-      ],
+      ]
     );
   };
 
@@ -131,8 +134,32 @@ export default function SettingsScreen() {
     Alert.alert(
       "About MyLiver App",
       "Version 1.0.0\n\nA comprehensive liver health tracking application designed to help you monitor and improve your liver wellness.\n\nDeveloped with care for your health.",
-      [{ text: "OK" }],
+      [{ text: "OK" }]
     );
+  };
+
+  const handleResetOnboarding = () => {
+    Alert.alert(
+      "Reset Onboarding",
+      "This will reset the onboarding flow and you'll see the welcome screen next time you open the app. Continue?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Reset",
+          style: "destructive",
+          onPress: async () => {
+            await resetOnboarding();
+            Alert.alert("Success", "Onboarding has been reset. The app will restart.", [
+              { text: "OK", onPress: () => router.replace("/") }
+            ]);
+          },
+        },
+      ]
+    );
+  };
+
+  const handleTestOnboarding = () => {
+    router.push("/(onboarding)/welcome");
   };
 
   return (
@@ -167,7 +194,9 @@ export default function SettingsScreen() {
           <SettingsRow
             icon={<Palette size={22} className="text-blue-500" />}
             title="Theme"
-            subtitle={`Currently using ${isDarkColorScheme ? "dark" : "light"} theme`}
+            subtitle={`Currently using ${
+              isDarkColorScheme ? "dark" : "light"
+            } theme`}
             onPress={handleThemePress}
             showBorder={false}
           />
@@ -279,6 +308,25 @@ export default function SettingsScreen() {
             showBorder={false}
           />
         </SettingsSection>
+
+        {/* Development Tools - Only show in development */}
+        {__DEV__ && (
+          <SettingsSection title="Development Tools" className="border-dashed border-2 border-muted">
+            <SettingsRow
+              icon={<Info size={22} className="text-blue-500" />}
+              title="Test Onboarding"
+              subtitle="Preview the welcome and onboarding flow"
+              onPress={handleTestOnboarding}
+            />
+            <SettingsRow
+              icon={<Info size={22} className="text-red-500" />}
+              title="Reset Onboarding"
+              subtitle="Clear onboarding status for testing"
+              onPress={handleResetOnboarding}
+              showBorder={false}
+            />
+          </SettingsSection>
+        )}
 
         {/* Footer */}
         <View className="px-4 pt-4">

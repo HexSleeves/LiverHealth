@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import { Text } from '~/components/ui/text';
-import { ChevronRight } from '~/lib/icons/ChevronRight';
-import { cn } from '~/lib/utils';
+import * as React from "react";
+import { TouchableOpacity, View } from "react-native";
+import { Text } from "~/components/ui/text";
+import { ChevronRight } from "~/lib/icons";
+import { cn } from "~/lib/utils";
 
 export interface SettingsRowProps {
   /**
@@ -68,9 +68,9 @@ export function SettingsRow({
   const rowContent = (
     <View
       className={cn(
-        'flex-row items-center justify-between px-4 py-4',
-        showBorder && 'border-b border-border',
-        disabled && 'opacity-50',
+        "flex-row items-center justify-between px-4 py-4",
+        showBorder && "border-b border-border",
+        disabled && "opacity-50",
         className
       )}
     >
@@ -93,16 +93,9 @@ export function SettingsRow({
       </View>
 
       <View className="flex-row items-center ml-3">
-        {rightElement && (
-          <View className="mr-2">
-            {rightElement}
-          </View>
-        )}
+        {rightElement && <View className="mr-2">{rightElement}</View>}
         {shouldShowChevron && (
-          <ChevronRight
-            size={20}
-            className="text-muted-foreground"
-          />
+          <ChevronRight size={20} className="text-muted-foreground" />
         )}
       </View>
     </View>
@@ -122,11 +115,7 @@ export function SettingsRow({
     );
   }
 
-  return (
-    <View testID={testID}>
-      {rowContent}
-    </View>
-  );
+  return <View testID={testID}>{rowContent}</View>;
 }
 
 export default SettingsRow;

@@ -1,4 +1,5 @@
-import { CalendarDays } from "lucide-react-native";
+import { CalendarDays, Calendar } from "lucide-react-native";
 import { iconWithClassName } from "./iconWithClassName";
 iconWithClassName(CalendarDays);
-export { CalendarDays };
+iconWithClassName(Calendar);
+export { CalendarDays, Calendar };

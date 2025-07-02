@@ -1,22 +1,22 @@
-import * as React from 'react';
-import { ScrollView, View, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text } from '~/components/ui/text';
-import { Switch } from '~/components/ui/switch';
-import { SettingsRow } from '~/components/ui/settings-row';
-import { H1, H2, Muted } from '~/components/ui/typography';
+import * as React from "react";
+import { ScrollView, View, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "~/components/ui/text";
+import { Switch } from "~/components/ui/switch";
+import { SettingsRow } from "~/components/settings-row";
+import { H1, H2, Muted } from "~/components/ui/typography";
 
 // Icons
-import { Bell } from '~/lib/icons/Bell';
-import { Palette } from '~/lib/icons/Palette';
-import { Shield } from '~/lib/icons/Shield';
-import { Database } from '~/lib/icons/Database';
-import { HelpCircle } from '~/lib/icons/HelpCircle';
-import { Star } from '~/lib/icons/Star';
-import { CircleUserRound } from '~/lib/icons/CircleUserRound';
-import { Settings } from '~/lib/icons/Settings';
-import { Info } from '~/lib/icons/Info';
-import { FileText } from '~/lib/icons/FileText';
+import { Bell } from "~/lib/icons/Bell";
+import { Palette } from "~/lib/icons/Palette";
+import { Shield } from "~/lib/icons/Shield";
+import { Database } from "~/lib/icons/Database";
+import { HelpCircle } from "~/lib/icons/HelpCircle";
+import { Star } from "~/lib/icons/Star";
+import { CircleUserRound } from "~/lib/icons/CircleUserRound";
+import { Settings } from "~/lib/icons/Settings";
+import { Info } from "~/lib/icons/Info";
+import { FileText } from "~/lib/icons/FileText";
 
 interface ShowcaseSectionProps {
   title: string;
@@ -24,13 +24,15 @@ interface ShowcaseSectionProps {
   children: React.ReactNode;
 }
 
-function ShowcaseSection({ title, description, children }: ShowcaseSectionProps) {
+function ShowcaseSection({
+  title,
+  description,
+  children,
+}: ShowcaseSectionProps) {
   return (
     <View className="mb-8">
       <H2 className="text-foreground mb-2">{title}</H2>
-      {description && (
-        <Muted className="mb-4 px-4">{description}</Muted>
-      )}
+      {description && <Muted className="mb-4 px-4">{description}</Muted>}
       <View className="bg-card rounded-xl overflow-hidden shadow-sm border border-border">
         {children}
       </View>
@@ -48,19 +50,19 @@ export function SettingsRowShowcase() {
 
   // Handlers for navigation examples
   const handleNavigation = (screen: string) => {
-    Alert.alert('Navigation', `Would navigate to: ${screen}`, [{ text: 'OK' }]);
+    Alert.alert("Navigation", `Would navigate to: ${screen}`, [{ text: "OK" }]);
   };
 
   const handleAction = (action: string) => {
-    Alert.alert('Action', `Performed action: ${action}`, [{ text: 'OK' }]);
+    Alert.alert("Action", `Performed action: ${action}`, [{ text: "OK" }]);
   };
 
   const handleThemeSelection = () => {
-    Alert.alert('Theme Selection', 'Choose your preferred theme', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Light', onPress: () => setDarkMode(false) },
-      { text: 'Dark', onPress: () => setDarkMode(true) },
-      { text: 'System', onPress: () => console.log('System theme') },
+    Alert.alert("Theme Selection", "Choose your preferred theme", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Light", onPress: () => setDarkMode(false) },
+      { text: "Dark", onPress: () => setDarkMode(true) },
+      { text: "System", onPress: () => console.log("System theme") },
     ]);
   };
 
@@ -75,7 +77,8 @@ export function SettingsRowShowcase() {
         <View className="mb-8">
           <H1 className="text-foreground mb-2">SettingsRow Showcase</H1>
           <Muted className="text-base">
-            Comprehensive examples of the SettingsRow component with various configurations and use cases.
+            Comprehensive examples of the SettingsRow component with various
+            configurations and use cases.
           </Muted>
         </View>
 
@@ -88,19 +91,19 @@ export function SettingsRowShowcase() {
             icon={<CircleUserRound size={22} className="text-primary" />}
             title="Profile Settings"
             subtitle="Manage your personal information"
-            onPress={() => handleNavigation('Profile')}
+            onPress={() => handleNavigation("Profile")}
           />
           <SettingsRow
             icon={<Settings size={22} className="text-gray-500" />}
             title="General Preferences"
             subtitle="App behavior and default settings"
-            onPress={() => handleNavigation('General')}
+            onPress={() => handleNavigation("General")}
           />
           <SettingsRow
             icon={<Shield size={22} className="text-green-500" />}
             title="Privacy & Security"
             subtitle="Control your data and security settings"
-            onPress={() => handleNavigation('Privacy')}
+            onPress={() => handleNavigation("Privacy")}
             showBorder={false}
           />
         </ShowcaseSection>
@@ -139,10 +142,7 @@ export function SettingsRowShowcase() {
             title="Automatic Backup"
             subtitle="Backup data to cloud storage"
             rightElement={
-              <Switch
-                checked={autoBackup}
-                onCheckedChange={setAutoBackup}
-              />
+              <Switch checked={autoBackup} onCheckedChange={setAutoBackup} />
             }
             showChevron={false}
             showBorder={false}
@@ -160,7 +160,7 @@ export function SettingsRowShowcase() {
             subtitle="Choose your preferred appearance"
             rightElement={
               <Text className="text-muted-foreground font-medium">
-                {darkMode ? 'Dark' : 'Light'}
+                {darkMode ? "Dark" : "Light"}
               </Text>
             }
             onPress={handleThemeSelection}
@@ -170,11 +170,9 @@ export function SettingsRowShowcase() {
             title="Storage Used"
             subtitle="Current app data usage"
             rightElement={
-              <Text className="text-muted-foreground font-medium">
-                24.8 MB
-              </Text>
+              <Text className="text-muted-foreground font-medium">24.8 MB</Text>
             }
-            onPress={() => handleAction('View Storage Details')}
+            onPress={() => handleAction("View Storage Details")}
           />
           <SettingsRow
             icon={<Star size={22} className="text-yellow-500" />}
@@ -182,12 +180,10 @@ export function SettingsRowShowcase() {
             subtitle="Current version information"
             rightElement={
               <View className="bg-primary/10 px-2 py-1 rounded-full">
-                <Text className="text-primary text-xs font-medium">
-                  v1.0.0
-                </Text>
+                <Text className="text-primary text-xs font-medium">v1.0.0</Text>
               </View>
             }
-            onPress={() => handleAction('Check for Updates')}
+            onPress={() => handleAction("Check for Updates")}
             showBorder={false}
           />
         </ShowcaseSection>
@@ -227,7 +223,7 @@ export function SettingsRowShowcase() {
                 </Text>
               </View>
             }
-            onPress={() => handleNavigation('Beta Features')}
+            onPress={() => handleNavigation("Beta Features")}
             showBorder={false}
           />
         </ShowcaseSection>
@@ -241,19 +237,19 @@ export function SettingsRowShowcase() {
             icon={<FileText size={22} className="text-blue-600" />}
             title="Export Data"
             subtitle="Download your data as PDF or CSV"
-            onPress={() => handleAction('Export Data')}
+            onPress={() => handleAction("Export Data")}
           />
           <SettingsRow
             icon={<Database size={22} className="text-purple-600" />}
             title="Clear Cache"
             subtitle="Free up storage space"
-            onPress={() => handleAction('Clear Cache')}
+            onPress={() => handleAction("Clear Cache")}
           />
           <SettingsRow
             icon={<HelpCircle size={22} className="text-blue-500" />}
             title="Contact Support"
             subtitle="Get help from our support team"
-            onPress={() => handleAction('Contact Support')}
+            onPress={() => handleAction("Contact Support")}
             showBorder={false}
           />
         </ShowcaseSection>
@@ -266,17 +262,17 @@ export function SettingsRowShowcase() {
           <SettingsRow
             title="Terms of Service"
             subtitle="Read our terms and conditions"
-            onPress={() => handleNavigation('Terms')}
+            onPress={() => handleNavigation("Terms")}
           />
           <SettingsRow
             title="Privacy Policy"
             subtitle="Learn about our privacy practices"
-            onPress={() => handleNavigation('Privacy Policy')}
+            onPress={() => handleNavigation("Privacy Policy")}
           />
           <SettingsRow
             title="Licenses"
             subtitle="Open source licenses and attributions"
-            onPress={() => handleNavigation('Licenses')}
+            onPress={() => handleNavigation("Licenses")}
             showBorder={false}
           />
         </ShowcaseSection>
@@ -324,8 +320,9 @@ export function SettingsRowShowcase() {
         {/* Footer */}
         <View className="mt-8 px-4">
           <Muted className="text-center">
-            This showcase demonstrates various configurations of the SettingsRow component.
-            Each example shows different props, states, and styling approaches.
+            This showcase demonstrates various configurations of the SettingsRow
+            component. Each example shows different props, states, and styling
+            approaches.
           </Muted>
         </View>
       </ScrollView>
