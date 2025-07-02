@@ -1,6 +1,5 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { router } from "expo-router";
 import { Text } from "~/components/ui/text";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
@@ -139,9 +138,9 @@ export default function LiverHealthDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {medications.map((med, index) => (
+          {medications.map((med) => (
             <View
-              key={index}
+              key={med.name}
               className="flex-row items-center justify-between p-3 bg-muted/30 rounded-lg"
             >
               <View className="flex-1">
@@ -231,8 +230,6 @@ export default function LiverHealthDashboard() {
           </Text>
         </CardContent>
       </Card>
-
-
     </ScrollView>
   );
 }

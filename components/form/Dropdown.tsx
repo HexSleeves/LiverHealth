@@ -40,7 +40,7 @@ export default function Dropdown({
   const selectedOption = options.find((o) => o.value === value);
   const selectValue = useMemo(() => {
     return value ? { value, label: selectedOption?.label ?? value } : undefined;
-  }, []);
+  }, [selectedOption?.label, value]);
 
   return (
     <View className="mb-5">

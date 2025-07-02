@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import Animated, { FadeInUp, LinearTransition } from "react-native-reanimated";
 import FormField from "~/components/form/FormField";
 import DatePicker from "~/components/form/DatePicker";
