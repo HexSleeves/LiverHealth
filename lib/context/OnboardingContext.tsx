@@ -20,6 +20,7 @@ import {
   medicationSchema,
   onboardingSchema,
 } from "~/types/onboarding";
+import * as z from "zod/v4";
 
 const STORAGE_KEY = "@onboarding_data";
 const ONBOARDING_COMPLETED_KEY = "@onboarding_completed";
@@ -181,10 +182,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     } catch (error: any) {
       const newErrors: Record<string, string> = {};
 
-      if (error.errors) {
-        error.errors.forEach((err: any) => {
-          const path = err.path.join(".");
-          newErrors[path] = err.message;
+      if (error instanceof z.ZodError) {
+        error.issues.forEach((issue) => {
+          const path = issue.path.join(".");
+          newErrors[path] = issue.message;
         });
       } else {
         newErrors.general = error.message;
@@ -206,7 +207,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({
       ...prev,
       personalInfo: { ...prev.personalInfo, ...data },
-      errors: {}, // Clear errors when user makes changes
+      // errors: {}, // Clear errors when user makes changes
     }));
   }, []);
 

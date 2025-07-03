@@ -33,6 +33,7 @@ interface FormInputProps<
   numberOfLines?: number;
   error?: FieldError;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export function FormInput<
@@ -51,13 +52,20 @@ export function FormInput<
   numberOfLines,
   error,
   disabled = false,
+  required = false,
 }: FormInputProps<TFieldValues, TName>) {
   return (
     <View className="space-y-2">
-      {label && <Label htmlFor={String(name)}>{label}</Label>}
+      {label && (
+        <Label htmlFor={String(name)}>
+          {label}
+          {required && <Text className="text-destructive">*</Text>}
+        </Label>
+      )}
       <Controller
-        control={control}
         name={name}
+        control={control}
+        rules={{ required }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             id={String(name)}

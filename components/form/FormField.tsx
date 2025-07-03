@@ -47,6 +47,7 @@ interface ReactHookFormFieldProps<
   readonly accessibilityLabel?: string;
   readonly accessibilityHint?: string;
   readonly error?: FieldError;
+  readonly defaultValue?: string;
 }
 
 type FormFieldProps<
@@ -87,6 +88,7 @@ export default function FormField<
       accessibilityLabel,
       accessibilityHint,
       error,
+      defaultValue,
     } = props;
 
     return (
@@ -122,6 +124,7 @@ export default function FormField<
                 numberOfLines={numberOfLines}
                 accessibilityLabel={accessibilityLabel ?? label}
                 accessibilityHint={accessibilityHint}
+                defaultValue={defaultValue}
               />
             )}
           />
@@ -220,7 +223,7 @@ export default function FormField<
       </View>
 
       {error && (
-        <View className="flex-row items-center mt-2 p-2 bg-medical-critical-light rounded-md">
+        <View className="flex-row items-center mt-2 p-2 rounded-md">
           <AlertCircle size={16} className="text-medical-critical" />
           <Text className="text-sm text-medical-critical ml-1.5 flex-1">
             {error}

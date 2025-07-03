@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Platform, Modal } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Control, Controller, FieldError, FieldPath, FieldValues } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
 import { Calendar, AlertCircle } from "~/lib/icons";
 import { format } from "date-fns";
 import { Text } from "~/components/ui/text";
@@ -23,7 +29,7 @@ interface LegacyDatePickerProps {
 // New interface for react-hook-form integration
 interface ReactHookFormDatePickerProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > {
   readonly control: Control<TFieldValues>;
   readonly name: TName;
@@ -38,14 +44,14 @@ interface ReactHookFormDatePickerProps<
 
 type DatePickerProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = LegacyDatePickerProps | ReactHookFormDatePickerProps<TFieldValues, TName>;
 
 // Type guard to check if props are for react-hook-form
 function isReactHookFormProps<TFieldValues extends FieldValues>(
   props: DatePickerProps<TFieldValues>
 ): props is ReactHookFormDatePickerProps<TFieldValues> {
-  return 'control' in props && 'name' in props;
+  return "control" in props && "name" in props;
 }
 
 // Helper component for the actual date picker UI
@@ -131,10 +137,6 @@ function DatePickerComponent({
             colorScheme: isDarkColorScheme ? "dark" : "light",
           }}
           aria-label={accessibilityLabel ?? "Date picker"}
-        />
-        <Calendar
-          size={20}
-          className="absolute right-3 top-3 text-muted-foreground pointer-events-none"
         />
       </View>
     );
@@ -222,7 +224,7 @@ function DatePickerComponent({
 
 export default function DatePicker<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: DatePickerProps<TFieldValues, TName>) {
   const { isDarkColorScheme } = useColorScheme();
   const [showPicker, setShowPicker] = useState(false);
@@ -246,7 +248,10 @@ export default function DatePicker<
         <Text className="text-base font-medium text-foreground mb-2">
           {label}
           {required && (
-            <Text className="text-base font-medium text-medical-critical"> *</Text>
+            <Text className="text-base font-medium text-medical-critical">
+              {" "}
+              *
+            </Text>
           )}
         </Text>
 
@@ -298,12 +303,15 @@ export default function DatePicker<
       <Text className="text-base font-medium text-foreground mb-2">
         {label}
         {required && (
-          <Text className="text-base font-medium text-medical-critical"> *</Text>
+          <Text className="text-base font-medium text-medical-critical">
+            {" "}
+            *
+          </Text>
         )}
       </Text>
 
       <DatePickerComponent
-        value={value}
+        value={value ?? null}
         onChange={onChange}
         placeholder="Select date"
         minimumDate={minimumDate}
@@ -316,7 +324,7 @@ export default function DatePicker<
       />
 
       {error && (
-        <View className="flex-row items-center mt-2 p-2 bg-medical-critical-light rounded-md">
+        <View className="flex-row items-center mt-2 p-2 rounded-md">
           <AlertCircle size={16} className="text-medical-critical" />
           <Text className="text-sm text-medical-critical ml-1.5 flex-1">
             {error}

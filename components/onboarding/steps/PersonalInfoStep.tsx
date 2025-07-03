@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { ScrollView } from "react-native";
 import Animated, { FadeInUp, LinearTransition } from "react-native-reanimated";
 import FormField from "~/components/form/FormField";
@@ -25,6 +25,13 @@ export default function PersonalInfoStep() {
     return text;
   };
 
+  const onChange = useCallback(
+    (field: string, text: string | Date) => {
+      setPersonalInfo({ ...personalInfo, [field]: text });
+    },
+    [setPersonalInfo, personalInfo]
+  );
+
   return (
     <ScrollView
       className="flex-1 px-5 pt-5"
@@ -48,9 +55,7 @@ export default function PersonalInfoStep() {
           required
           label="First Name"
           value={personalInfo.firstName ?? ""}
-          onChangeText={(text) =>
-            setPersonalInfo({ ...personalInfo, firstName: text })
-          }
+          onChangeText={(text) => onChange("firstName", text)}
           placeholder="Enter your first name"
           error={errors["firstName"]}
           accessibilityLabel="First name input"
@@ -61,9 +66,7 @@ export default function PersonalInfoStep() {
         <FormField
           label="Middle Name"
           value={personalInfo.middleName ?? ""}
-          onChangeText={(text) =>
-            setPersonalInfo({ ...personalInfo, middleName: text })
-          }
+          onChangeText={(text) => onChange("middleName", text)}
           placeholder="Enter your middle name (optional)"
           error={errors["middleName"]}
           accessibilityLabel="Middle name input"
@@ -75,9 +78,7 @@ export default function PersonalInfoStep() {
           required
           label="Last Name"
           value={personalInfo.lastName ?? ""}
-          onChangeText={(text) =>
-            setPersonalInfo({ ...personalInfo, lastName: text })
-          }
+          onChangeText={(text) => onChange("lastName", text)}
           placeholder="Enter your last name"
           error={errors["lastName"]}
           accessibilityLabel="Last name input"
@@ -91,9 +92,7 @@ export default function PersonalInfoStep() {
           value={
             personalInfo.dateOfBirth ? new Date(personalInfo.dateOfBirth) : null
           }
-          onChange={(date) =>
-            setPersonalInfo({ ...personalInfo, dateOfBirth: date })
-          }
+          onChange={(date) => onChange("dateOfBirth", date)}
           error={errors["dateOfBirth"]}
           maximumDate={new Date()}
           accessibilityLabel="Date of birth picker"
@@ -105,9 +104,7 @@ export default function PersonalInfoStep() {
           required
           label="Email Address"
           value={personalInfo.email ?? ""}
-          onChangeText={(text) =>
-            setPersonalInfo({ ...personalInfo, email: text })
-          }
+          onChangeText={(text) => onChange("email", text)}
           placeholder="Enter your email address"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -121,10 +118,7 @@ export default function PersonalInfoStep() {
           required
           label="Phone Number"
           value={personalInfo.phone ?? ""}
-          onChangeText={(text) => {
-            const formatted = formatPhoneNumber(text);
-            setPersonalInfo({ ...personalInfo, phone: formatted });
-          }}
+          onChangeText={(text) => onChange("phone", formatPhoneNumber(text))}
           placeholder="(XXX) XXX-XXXX"
           keyboardType="phone-pad"
           error={errors["phone"]}
