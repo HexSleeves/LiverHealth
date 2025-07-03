@@ -13,21 +13,18 @@ export default function RootIndex() {
   useEffect(() => {
     if (isLoading) return;
 
-    // Test onboarding
-    router.replace("/(onboarding)/");
+    // If the user is not authenticated, redirect to the login screen
+    if (!userId) {
+      router.replace("/(auth)/login");
+      return;
+    }
 
-    // // If the user is not authenticated, redirect to the login screen
-    // if (!userId) {
-    //   router.replace("/(auth)/login");
-    //   return;
-    // }
-
-    // // If the user is authenticated, check if they have completed onboarding
-    // if (hasCompletedOnboarding) {
-    //   router.replace("/(tabs)");
-    // } else {
-    //   router.replace("/(onboarding)/welcome");
-    // }
+    // If the user is authenticated, check if they have completed onboarding
+    if (hasCompletedOnboarding) {
+      router.replace("/(tabs)");
+    } else {
+      router.replace("/(onboarding)/welcome");
+    }
   }, [isLoading, hasCompletedOnboarding, userId]);
 
   // Show loading screen while checking onboarding status
