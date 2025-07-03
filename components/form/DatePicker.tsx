@@ -199,7 +199,6 @@ function DatePickerComponent({
                   onChange={handleDateChange}
                   minimumDate={minimumDate}
                   maximumDate={maximumDate}
-                  textColor="hsl(var(--foreground))"
                   themeVariant={isDarkColorScheme ? "dark" : "light"}
                 />
               </View>

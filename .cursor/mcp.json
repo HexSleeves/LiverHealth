@@ -21,8 +21,12 @@
       ]
     },
     "convex": {
-      "command": "npx",
+      "command": "bunx",
       "args": ["-y", "convex@latest", "mcp", "start"]
+    },
+    "ios-simulator": {
+      "command": "bunx",
+      "args": ["-y", "ios-simulator-mcp@latest"]
     }
   }
 }

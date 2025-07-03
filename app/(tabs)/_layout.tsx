@@ -1,11 +1,15 @@
 import { Tabs } from "expo-router";
 import { Shield, Database, Bell, Settings } from "~/lib/icons";
+import { useColorScheme } from "~/lib/useColorScheme";
+import { NAV_THEME } from "~/lib/constants";
 
 export default function TabsLayout() {
+  const { colorScheme } = useColorScheme();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "hsl(var(--primary))",
+        tabBarActiveTintColor: NAV_THEME[colorScheme].primary,
         tabBarStyle: {
           paddingBottom: 8,
           paddingTop: 8,

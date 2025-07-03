@@ -192,6 +192,25 @@ export default function LiverHealthDashboard() {
               }
             };
 
+            // Get background color for progress bars
+            const getBackgroundColorForNutrient = (nutrientKey: string) => {
+              switch (nutrientKey) {
+                case "sodium":
+                  return isOverTarget
+                    ? "bg-medical-warning"
+                    : "bg-nutrition-sodium";
+                case "potassium":
+                  return "bg-nutrition-potassium";
+                case "protein":
+                  return "bg-nutrition-protein";
+                case "fluids":
+                  return "bg-nutrition-water";
+                default:
+                  return "bg-foreground";
+              }
+            };
+
+
             return (
               <View key={key} className="gap-y-2">
                 <View className="flex-row justify-between items-center">
@@ -219,7 +238,11 @@ export default function LiverHealthDashboard() {
                     )}
                   </View>
                 </View>
-                <Progress value={percentage} className="h-3" />
+                <Progress 
+                  value={percentage} 
+                  className="h-3" 
+                  indicatorClassName={getBackgroundColorForNutrient(key)}
+                />
               </View>
             );
           })}
@@ -237,7 +260,7 @@ export default function LiverHealthDashboard() {
         <CardContent className="gap-y-3">
           {medications.map((med) => (
             <View
-              key={med.name}
+              key={`${med.name}-${med.time}`}
               className="flex-row items-center justify-between p-4 bg-card border border-border rounded-xl shadow-sm"
             >
               <View className="flex-1">
