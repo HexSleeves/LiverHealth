@@ -1,24 +1,38 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Link, router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Shield, ArrowLeft } from "~/lib/icons";
+import { Shield, ArrowLeft, AlertCircle } from "~/lib/icons";
+import { FormInput } from "~/components/form/FormInput";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "~/types/auth";
 
 export default function ForgotPasswordScreen() {
-  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
-  const handleResetPassword = async () => {
-    if (!email.trim()) {
-      alert("Please enter your email address");
-      return;
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    setError,
+    reset,
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+    },
+  });
 
+  const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
       setIsLoading(true);
 
@@ -26,10 +40,13 @@ export default function ForgotPasswordScreen() {
       // In a real app, you'd integrate with Clerk or your auth service
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
+      setSubmittedEmail(data.email);
       setIsEmailSent(true);
     } catch (error) {
       console.error("Password reset error:", error);
-      alert("Failed to send reset email. Please try again.");
+      setError("root", {
+        message: "Failed to send reset email. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -37,6 +54,12 @@ export default function ForgotPasswordScreen() {
 
   const handleBackToLogin = () => {
     router.replace("/(auth)/login");
+  };
+
+  const handleTryDifferentEmail = () => {
+    setIsEmailSent(false);
+    setSubmittedEmail("");
+    reset();
   };
 
   if (isEmailSent) {
@@ -52,7 +75,7 @@ export default function ForgotPasswordScreen() {
               Check Your Email
             </Text>
             <Text className="text-base text-muted-foreground text-center">
-              We've sent password reset instructions to {email}
+              We've sent password reset instructions to {submittedEmail}
             </Text>
           </View>
 
@@ -68,7 +91,7 @@ export default function ForgotPasswordScreen() {
               </Button>
 
               <Button
-                onPress={() => setIsEmailSent(false)}
+                onPress={handleTryDifferentEmail}
                 variant="outline"
                 className="w-full"
               >
@@ -112,21 +135,30 @@ export default function ForgotPasswordScreen() {
             </View>
           </CardHeader>
           <CardContent className="space-y-4">
-            <View className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
+            {/* Error Display */}
+            {errors.root?.message && (
+              <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                <AlertCircle size={16} className="text-destructive mt-0.5" />
+                <Text className="text-destructive text-sm flex-1">
+                  {errors.root.message}
+                </Text>
+              </View>
+            )}
+
+            <FormInput
+              control={control}
+              name="email"
+              label="Email Address"
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              error={errors.email}
+            />
 
             <Button
-              onPress={handleResetPassword}
-              disabled={isLoading}
+              onPress={handleSubmit(onSubmit)}
+              disabled={isLoading || !isValid}
               className="w-full"
             >
               <Text>

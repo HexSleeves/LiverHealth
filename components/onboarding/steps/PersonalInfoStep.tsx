@@ -10,7 +10,7 @@ import { StaggeredFormField } from "../../animation/StepTransition";
 import {
   useOnboardingData,
   useOnboardingActions,
-} from "~/components/providers/OnboardingProvider";
+} from "~/lib/context/OnboardingContext";
 
 export default function PersonalInfoStep() {
   const { personalInfo, errors } = useOnboardingData();

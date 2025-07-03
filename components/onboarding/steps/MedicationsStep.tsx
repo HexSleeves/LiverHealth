@@ -14,7 +14,7 @@ import { Button } from "~/components/ui/button";
 import {
   useOnboardingData,
   useOnboardingActions,
-} from "~/components/providers/OnboardingProvider";
+} from "~/lib/context/OnboardingContext";
 
 export default function MedicationsStep() {
   const { medications, errors } = useOnboardingData();

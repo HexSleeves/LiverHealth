@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "convex/react";
 import { api } from "~/convex/_generated/api";
-import type { Id } from "~/convex/_generated/dataModel";
+import type { Doc, Id } from "~/convex/_generated/dataModel";
 
 // User hooks
-export const useUser = (clerkId: string) => {
+export const useUser = (clerkId: string): Doc<"users"> | null | undefined => {
   return useQuery(api.users.getUserByClerkId, { clerkId });
 };
 

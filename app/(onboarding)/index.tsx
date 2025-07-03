@@ -13,7 +13,7 @@ import { Text } from "~/components/ui/text";
 import {
   useOnboardingData,
   useOnboardingActions,
-} from "~/components/providers/OnboardingProvider";
+} from "~/lib/context/OnboardingContext";
 
 import AnimatedProgressBar from "~/components/animation/ProgressBar";
 import AnimatedStepTransition from "~/components/animation/StepTransition";

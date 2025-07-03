@@ -284,10 +284,10 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, "true");
 
       // Show success screen instead of alert
-      setState((prev) => ({ 
-        ...prev, 
-        isSubmitting: false, 
-        showSuccess: true 
+      setState((prev) => ({
+        ...prev,
+        isSubmitting: false,
+        showSuccess: true,
       }));
     } catch (error: any) {
       Alert.alert(

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.1.6",
+    "@hookform/resolvers": "^5.1.1",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-community/datetimepicker": "8.4.1",
     "@react-navigation/native": "^7.1.6",
@@ -49,6 +50,7 @@
     "react": "19.0.0",
     "react-day-picker": "^9.7.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.59.0",
     "react-native": "0.79.5",
     "react-native-calendars": "^1.1313.0",
     "react-native-gesture-handler": "~2.24.0",

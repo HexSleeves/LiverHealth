@@ -1,11 +1,11 @@
-import React from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
-import { Check } from '~/lib/icons';
-import { Text } from '~/components/ui/text';
+import React from "react";
+import { ScrollView, View, TouchableOpacity } from "react-native";
+import { Check } from "~/lib/icons";
+import { Text } from "~/components/ui/text";
 import {
   useOnboardingData,
   useOnboardingActions,
-} from '~/components/providers/OnboardingProvider';
+} from "~/lib/context/OnboardingContext";
 
 export default function ReviewStep() {
   const {
@@ -27,7 +27,8 @@ export default function ReviewStep() {
           Review & Submit
         </Text>
         <Text className="text-base text-muted-foreground">
-          Please review all your information before submitting. You can edit any section by tapping on it.
+          Please review all your information before submitting. You can edit any
+          section by tapping on it.
         </Text>
       </View>
 
@@ -41,20 +42,20 @@ export default function ReviewStep() {
           Personal Information
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
-          {personalInfo.firstName} {personalInfo.middleName}{' '}
+          {personalInfo.firstName} {personalInfo.middleName}{" "}
           {personalInfo.lastName}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
-          Born:{' '}
+          Born:{" "}
           {personalInfo.dateOfBirth
             ? new Date(personalInfo.dateOfBirth).toLocaleDateString()
-            : 'Not provided'}
+            : "Not provided"}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
           Email: {personalInfo.email}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
-          Phone: {personalInfo.phone ?? 'Not provided'}
+          Phone: {personalInfo.phone ?? "Not provided"}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
           Emergency Contact: {personalInfo.emergencyContact?.fullName} (
@@ -73,15 +74,15 @@ export default function ReviewStep() {
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
           Primary Diagnosis: {diseaseHistory.primaryDiagnosis}
-          {diseaseHistory.primaryDiagnosis === 'Other' &&
+          {diseaseHistory.primaryDiagnosis === "Other" &&
             diseaseHistory.otherDiagnosis &&
             ` (${diseaseHistory.otherDiagnosis})`}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
-          Diagnosed:{' '}
+          Diagnosed:{" "}
           {diseaseHistory.diagnosisDate
             ? new Date(diseaseHistory.diagnosisDate).toLocaleDateString()
-            : 'Not provided'}
+            : "Not provided"}
         </Text>
         <Text className="text-sm text-muted-foreground mb-1">
           Stage: {diseaseHistory.diseaseStage}
@@ -89,8 +90,8 @@ export default function ReviewStep() {
         {diseaseHistory.secondaryConditions &&
           diseaseHistory.secondaryConditions.length > 0 && (
             <Text className="text-sm text-muted-foreground mb-1">
-              Secondary Conditions:{' '}
-              {diseaseHistory.secondaryConditions.join(', ')}
+              Secondary Conditions:{" "}
+              {diseaseHistory.secondaryConditions.join(", ")}
             </Text>
           )}
         <Text className="text-sm text-muted-foreground mb-1">
@@ -108,11 +109,8 @@ export default function ReviewStep() {
           Medications
         </Text>
         {medications.medications && medications.medications.length > 0 ? (
-          medications.medications.map(med => (
-            <Text
-              key={med.name}
-              className="text-sm text-muted-foreground mb-1"
-            >
+          medications.medications.map((med) => (
+            <Text key={med.name} className="text-sm text-muted-foreground mb-1">
               {med.name} - {med.dosage} {med.unit}, {med.frequency}
             </Text>
           ))
@@ -135,27 +133,24 @@ export default function ReviewStep() {
           <View
             className={`w-6 h-6 rounded border-2 items-center justify-center mr-3 mt-0.5 ${
               finalConfirmation
-                ? 'border-primary bg-primary'
-                : 'border-border bg-transparent'
+                ? "border-primary bg-primary"
+                : "border-border bg-transparent"
             }`}
           >
             {finalConfirmation && (
-              <Check
-                size={16}
-                className="text-primary-foreground"
-              />
+              <Check size={16} className="text-primary-foreground" />
             )}
           </View>
           <Text className="text-sm leading-5 flex-1 text-foreground">
             I confirm that all the information provided is accurate and
-            complete. I understand that this information will be used to
-            provide personalized health recommendations and will be kept
-            confidential according to HIPAA guidelines.
+            complete. I understand that this information will be used to provide
+            personalized health recommendations and will be kept confidential
+            according to HIPAA guidelines.
           </Text>
         </TouchableOpacity>
-        {!!errors['general'] && (
+        {!!errors["general"] && (
           <Text className="text-sm mt-2 text-destructive">
-            {errors['general']}
+            {errors["general"]}
           </Text>
         )}
       </View>

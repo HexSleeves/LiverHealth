@@ -7,6 +7,8 @@ import MultiSelect from "~/components/form/MultiSelect";
 import {
   DIAGNOSIS_OPTIONS,
   DISEASE_STAGES,
+  DiseaseHistory,
+  diseaseHistorySchema,
   SECONDARY_CONDITIONS,
   TEST_TYPES,
 } from "~/types/onboarding";
@@ -15,7 +17,7 @@ import { Button } from "~/components/ui/button";
 import {
   useOnboardingData,
   useOnboardingActions,
-} from "~/components/providers/OnboardingProvider";
+} from "~/lib/context/OnboardingContext";
 
 export default function DiseaseHistoryStep() {
   const { diseaseHistory, errors } = useOnboardingData();

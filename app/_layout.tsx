@@ -21,6 +21,7 @@ import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/useColorScheme";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { UserProvider } from "~/lib/context/UserContext";
+import { ErrorBoundary } from "~/components/ErrorBoundary";
 
 // Prevent the splash screen from auto-hiding before resource loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -102,57 +103,62 @@ export default function RootLayout() {
   };
 
   return (
-    <ConvexProvider client={convex}>
-      <UserProvider>
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <GestureHandlerRootView
-            style={{ flex: 1 }}
-            onLayout={onLayoutRootView}
-          >
-            <BottomSheetModalProvider>
-              <Stack initialRouteName="index" screenOptions={screenOptions}>
-                <Stack.Screen
-                  name="index"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="(tabs)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+    <ErrorBoundary>
+      <ConvexProvider client={convex}>
+        <UserProvider>
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <GestureHandlerRootView
+              style={{ flex: 1 }}
+              onLayout={onLayoutRootView}
+            >
+              <BottomSheetModalProvider>
+                <Stack initialRouteName="index" screenOptions={screenOptions}>
+                  <Stack.Screen
+                    name="index"
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{
+                      headerShown: false,
+                      gestureEnabled: false, // Prevent back navigation to auth
+                    }}
+                  />
 
-                <Stack.Screen
-                  name="(onboarding)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+                  <Stack.Screen
+                    name="(onboarding)"
+                    options={{
+                      headerShown: false,
+                      gestureEnabled: false, // Prevent back navigation during onboarding
+                    }}
+                  />
 
-                <Stack.Screen
-                  name="(auth)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
+                  <Stack.Screen
+                    name="(auth)"
+                    options={{
+                      headerShown: false,
+                      gestureEnabled: false, // Prevent back navigation in auth flow
+                    }}
+                  />
 
-                <Stack.Screen
-                  name="modal"
-                  options={{
-                    presentation: "modal",
-                    title: "Modal",
-                  }}
-                />
-              </Stack>
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-          <PortalHost />
-        </ThemeProvider>
-      </UserProvider>
-    </ConvexProvider>
+                  <Stack.Screen
+                    name="modal"
+                    options={{
+                      presentation: "modal",
+                      title: "Modal",
+                    }}
+                  />
+                </Stack>
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
+            <PortalHost />
+          </ThemeProvider>
+        </UserProvider>
+      </ConvexProvider>
+    </ErrorBoundary>
   );
 }
 

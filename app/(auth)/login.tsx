@@ -1,40 +1,53 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Link, router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { useUserContext } from "~/lib/context/UserContext";
-import { Shield } from "~/lib/icons";
+import { Shield, AlertCircle } from "~/lib/icons";
+import { FormInput } from "~/components/form/FormInput";
+import { loginSchema, type LoginFormData } from "~/types/auth";
+
+// Generate a unique demo ID for each session
+const generateDemoId = () => {
+  return `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
 
 export default function LoginScreen() {
-  const { signIn, isLoading } = useUserContext();
-  const [formData, setFormData] = useState({
-    id: "1234567890",
-    email: "",
+  const { signIn, isLoading, error } = useUserContext();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    setError,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+    },
   });
 
-  const handleSignIn = async () => {
-    if (!formData.email.trim()) {
-      alert("Please fill in all fields");
-      return;
-    }
-
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      // For demo purposes, we'll use the email as clerkId
+      // For demo purposes, we'll use a generated ID as clerkId
       // In a real app, you'd integrate with Clerk for proper auth
       await signIn({
-        clerkId: formData.id, // This would come from Clerk in production
-        email: formData.email,
+        clerkId: generateDemoId(), // This would come from Clerk in production
+        email: data.email,
       });
 
       // Navigate to main app after successful sign in
       router.replace("/(tabs)");
     } catch (error) {
       console.error("Sign in error:", error);
-      alert("Failed to sign in. Please try again.");
+      setError("root", {
+        message: "Failed to sign in. Please try again.",
+      });
     }
   };
 
@@ -58,28 +71,38 @@ export default function LoginScreen() {
           <CardHeader>
             <CardTitle className="text-center text-xl">Sign In</CardTitle>
           </CardHeader>
+
           <CardContent className="space-y-4">
-            <View className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
+            <View className="gap-y-2">
+              {/* Error Display */}
+              {(errors.root?.message || error) && (
+                <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                  <AlertCircle size={16} className="text-destructive mt-0.5" />
+                  <Text className="text-destructive text-sm flex-1">
+                    {errors.root?.message || error}
+                  </Text>
+                </View>
+              )}
+
+              <FormInput
+                control={control}
+                name="email"
+                label="Email"
                 placeholder="Enter your email"
-                value={formData.email}
-                onChangeText={(text) =>
-                  setFormData((prev) => ({ ...prev, email: text }))
-                }
                 keyboardType="email-address"
                 autoCapitalize="none"
+                autoComplete="email"
+                error={errors.email}
               />
-            </View>
 
-            <Button
-              onPress={handleSignIn}
-              disabled={isLoading}
-              className="w-full"
-            >
-              <Text>{isLoading ? "Signing in..." : "Sign In"}</Text>
-            </Button>
+              <Button
+                onPress={handleSubmit(onSubmit)}
+                disabled={isLoading || !isValid}
+                className="w-full"
+              >
+                <Text>{isLoading ? "Signing in..." : "Sign In"}</Text>
+              </Button>
+            </View>
 
             <View className="flex-row justify-center space-x-1 mt-4">
               <Link href="/(auth)/forgot-password" asChild>

@@ -1,47 +1,55 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Link, router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import { useUserContext } from "~/lib/context/UserContext";
-import { Shield } from "~/lib/icons";
+import { Shield, AlertCircle } from "~/lib/icons";
+import { FormInput } from "~/components/form/FormInput";
+import { signupSchema, type SignupFormData } from "~/types/auth";
+
+// Generate a unique demo ID for each session
+const generateDemoId = () => {
+  return `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+};
 
 export default function SignupScreen() {
-  const { signIn, isLoading } = useUserContext();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    confirmEmail: "",
+  const { signIn, isLoading, error } = useUserContext();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid },
+    setError,
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      confirmEmail: "",
+    },
   });
 
-  const handleSignUp = async () => {
-    if (!formData.name.trim() || !formData.email.trim() || !formData.confirmEmail.trim()) {
-      alert("Please fill in all fields");
-      return;
-    }
-
-    if (formData.email !== formData.confirmEmail) {
-      alert("Emails do not match");
-      return;
-    }
-
+  const onSubmit = async (data: SignupFormData) => {
     try {
       // For demo purposes, we'll create the user account
       // In a real app, you'd integrate with Clerk for proper auth
       await signIn({
-        clerkId: formData.email, // This would come from Clerk in production
-        email: formData.email,
-        name: formData.name,
+        clerkId: generateDemoId(), // This would come from Clerk in production
+        email: data.email,
       });
-      
+
       // Navigate to main app after successful sign up
       router.replace("/(tabs)");
     } catch (error) {
       console.error("Sign up error:", error);
-      alert("Failed to create account. Please try again.");
+      setError("root", {
+        message: "Failed to create account. Please try again.",
+      });
     }
   };
 
@@ -66,50 +74,61 @@ export default function SignupScreen() {
             <CardTitle className="text-center text-xl">Sign Up</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <View className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input
-                id="name"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, name: text }))}
-              />
-            </View>
-            
-            <View className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, email: text }))}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
+            {/* Error Display */}
+            {(errors.root?.message || error) && (
+              <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                <AlertCircle size={16} className="text-destructive mt-0.5" />
+                <Text className="text-destructive text-sm flex-1">
+                  {errors.root?.message || error}
+                </Text>
+              </View>
+            )}
 
-            <View className="space-y-2">
-              <Label htmlFor="confirmEmail">Confirm Email</Label>
-              <Input
-                id="confirmEmail"
-                placeholder="Confirm your email"
-                value={formData.confirmEmail}
-                onChangeText={(text) => setFormData(prev => ({ ...prev, confirmEmail: text }))}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
+            <FormInput
+              control={control}
+              name="name"
+              label="Full Name"
+              placeholder="Enter your full name"
+              autoComplete="name"
+              error={errors.name}
+            />
+
+            <FormInput
+              control={control}
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              error={errors.email}
+            />
+
+            <FormInput
+              control={control}
+              name="confirmEmail"
+              label="Confirm Email"
+              placeholder="Confirm your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              error={errors.confirmEmail}
+            />
 
             <Button
-              onPress={handleSignUp}
-              disabled={isLoading}
+              onPress={handleSubmit(onSubmit)}
+              disabled={isLoading || !isValid}
               className="w-full"
             >
-              <Text>{isLoading ? "Creating Account..." : "Create Account"}</Text>
+              <Text>
+                {isLoading ? "Creating Account..." : "Create Account"}
+              </Text>
             </Button>
 
             <View className="flex-row justify-center items-center space-x-2 mt-6">
-              <Text className="text-muted-foreground">Already have an account?</Text>
+              <Text className="text-muted-foreground">
+                Already have an account?
+              </Text>
               <Link href="/(auth)/login" asChild>
                 <Button variant="link" className="p-0">
                   <Text className="text-primary font-medium">Sign In</Text>
@@ -118,7 +137,8 @@ export default function SignupScreen() {
             </View>
 
             <Text className="text-xs text-muted-foreground text-center mt-4">
-              By creating an account, you agree to our Terms of Service and Privacy Policy.
+              By creating an account, you agree to our Terms of Service and
+              Privacy Policy.
             </Text>
           </CardContent>
         </Card>
