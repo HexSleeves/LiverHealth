@@ -73,10 +73,10 @@ export default function SignupScreen() {
           <CardHeader>
             <CardTitle className="text-center text-xl">Sign Up</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="gap-y-4">
             {/* Error Display */}
             {(errors.root?.message || error) && (
-              <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <View className="flex-row items-start gap-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
                 <AlertCircle size={16} className="text-destructive mt-0.5" />
                 <Text className="text-destructive text-sm flex-1">
                   {errors.root?.message || error}
@@ -125,7 +125,7 @@ export default function SignupScreen() {
               </Text>
             </Button>
 
-            <View className="flex-row justify-center items-center space-x-2 mt-6">
+            <View className="flex-row justify-center items-center gap-x-2 mt-6">
               <Text className="text-muted-foreground">
                 Already have an account?
               </Text>

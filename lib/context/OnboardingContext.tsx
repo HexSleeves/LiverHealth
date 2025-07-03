@@ -159,6 +159,41 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     debouncedSave();
   }, [debouncedSave]);
 
+  // Helper function to clear field errors that now pass validation
+  const clearValidFieldErrors = useCallback(
+    (
+      updatedData: any,
+      schema: z.ZodSchema<any>,
+      updatedFields: string[],
+      currentErrors: Record<string, string>
+    ): Record<string, string> => {
+      try {
+        schema.parse(updatedData);
+        // If entire section passes validation, clear all errors
+        return {};
+      } catch (error: any) {
+        if (error instanceof z.ZodError) {
+          const newErrors = { ...currentErrors };
+          const errorFields = new Set(
+            error.issues.map((issue) => issue.path.join("."))
+          );
+
+          // For each field that was updated, check if it no longer has validation errors
+          updatedFields.forEach((field) => {
+            if (!errorFields.has(field)) {
+              delete newErrors[field];
+            }
+          });
+
+          return newErrors;
+        }
+        // Keep existing errors if we can't parse the validation error
+        return currentErrors;
+      }
+    },
+    []
+  );
+
   // Validation helper
   const validateCurrentStep = useCallback(() => {
     try {
@@ -203,36 +238,90 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   ]);
 
   // Actions
-  const setPersonalInfo = useCallback((data: Partial<PersonalInfo>) => {
-    setState((prev) => ({
-      ...prev,
-      personalInfo: { ...prev.personalInfo, ...data },
-      // errors: {}, // Clear errors when user makes changes
-    }));
-  }, []);
+  const setPersonalInfo = useCallback(
+    (data: Partial<PersonalInfo>) => {
+      setState((prev) => {
+        const updatedPersonalInfo = { ...prev.personalInfo, ...data };
+        const updatedFields = Object.keys(data);
 
-  const setDiseaseHistory = useCallback((data: Partial<DiseaseHistory>) => {
-    setState((prev) => ({
-      ...prev,
-      diseaseHistory: { ...prev.diseaseHistory, ...data },
-      errors: {},
-    }));
-  }, []);
+        const clearedErrors = clearValidFieldErrors(
+          updatedPersonalInfo,
+          personalInfoSchema,
+          updatedFields,
+          prev.errors
+        );
 
-  const setMedications = useCallback((data: Partial<Medications>) => {
-    setState((prev) => ({
-      ...prev,
-      medications: { ...prev.medications, ...data },
-      errors: {},
-    }));
-  }, []);
+        return {
+          ...prev,
+          personalInfo: updatedPersonalInfo,
+          errors: clearedErrors,
+        };
+      });
+    },
+    [clearValidFieldErrors]
+  );
+
+  const setDiseaseHistory = useCallback(
+    (data: Partial<DiseaseHistory>) => {
+      setState((prev) => {
+        const updatedDiseaseHistory = { ...prev.diseaseHistory, ...data };
+        const updatedFields = Object.keys(data);
+
+        const clearedErrors = clearValidFieldErrors(
+          updatedDiseaseHistory,
+          diseaseHistorySchema,
+          updatedFields,
+          prev.errors
+        );
+
+        return {
+          ...prev,
+          diseaseHistory: updatedDiseaseHistory,
+          errors: clearedErrors,
+        };
+      });
+    },
+    [clearValidFieldErrors]
+  );
+
+  const setMedications = useCallback(
+    (data: Partial<Medications>) => {
+      setState((prev) => {
+        const updatedMedications = { ...prev.medications, ...data };
+        const updatedFields = Object.keys(data);
+
+        const clearedErrors = clearValidFieldErrors(
+          updatedMedications,
+          medicationSchema,
+          updatedFields,
+          prev.errors
+        );
+
+        return {
+          ...prev,
+          medications: updatedMedications,
+          errors: clearedErrors,
+        };
+      });
+    },
+    [clearValidFieldErrors]
+  );
 
   const setFinalConfirmation = useCallback((value: boolean) => {
-    setState((prev) => ({
-      ...prev,
-      finalConfirmation: value,
-      errors: {},
-    }));
+    setState((prev) => {
+      const newErrors = { ...prev.errors };
+
+      // Clear the general error if final confirmation is true
+      if (value) {
+        delete newErrors.general;
+      }
+
+      return {
+        ...prev,
+        finalConfirmation: value,
+        errors: newErrors,
+      };
+    });
   }, []);
 
   const setCurrentStep = useCallback((step: number) => {

@@ -62,7 +62,7 @@ export default function AnimatedWelcomeScreen() {
 
         {/* Features Section */}
         <Animated.View
-          className="space-y-4 mb-8 gap-2"
+          className="gap-y-4 mb-8"
           layout={LinearTransition.springify().damping(20).stiffness(100)}
         >
           <FeatureItem
@@ -86,7 +86,7 @@ export default function AnimatedWelcomeScreen() {
 
         {/* Action Buttons */}
         <Animated.View
-          className="space-y-3 gap-2"
+          className="gap-y-3"
           entering={FadeInDown.delay(1600)
             .springify()
             .damping(20)
@@ -125,7 +125,7 @@ function FeatureItem({
 }) {
   return (
     <Animated.View
-      className="flex-row items-start space-x-3 p-4 bg-card rounded-lg border border-border gap-2"
+      className="flex-row items-start gap-x-3 p-4 bg-card rounded-lg border border-border"
       entering={SlideInLeft.delay(delay).springify().damping(20).stiffness(100)}
       layout={LinearTransition.springify().damping(20).stiffness(100)}
     >

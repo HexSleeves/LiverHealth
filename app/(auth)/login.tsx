@@ -12,9 +12,7 @@ import { FormInput } from "~/components/form/FormInput";
 import { loginSchema, type LoginFormData } from "~/types/auth";
 
 // Generate a unique demo ID for each session
-const generateDemoId = () => {
-  return `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-};
+const DEMO_ID = "demo_1234567890";
 
 export default function LoginScreen() {
   const { signIn, isLoading, error } = useUserContext();
@@ -37,7 +35,7 @@ export default function LoginScreen() {
       // For demo purposes, we'll use a generated ID as clerkId
       // In a real app, you'd integrate with Clerk for proper auth
       await signIn({
-        clerkId: generateDemoId(), // This would come from Clerk in production
+        clerkId: DEMO_ID, // This would come from Clerk in production
         email: data.email,
       });
 
@@ -72,11 +70,11 @@ export default function LoginScreen() {
             <CardTitle className="text-center text-xl">Sign In</CardTitle>
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent className="gap-y-4">
             <View className="gap-y-2">
               {/* Error Display */}
               {(errors.root?.message || error) && (
-                <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                <View className="flex-row items-start gap-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
                   <AlertCircle size={16} className="text-destructive mt-0.5" />
                   <Text className="text-destructive text-sm flex-1">
                     {errors.root?.message || error}
@@ -104,7 +102,7 @@ export default function LoginScreen() {
               </Button>
             </View>
 
-            <View className="flex-row justify-center space-x-1 mt-4">
+            <View className="flex-row justify-center gap-x-1 mt-4">
               <Link href="/(auth)/forgot-password" asChild>
                 <Button variant="link" className="p-0">
                   <Text className="text-primary">Forgot Password?</Text>
@@ -112,7 +110,7 @@ export default function LoginScreen() {
               </Link>
             </View>
 
-            <View className="flex-row justify-center items-center space-x-2 mt-6">
+            <View className="flex-row justify-center items-center gap-x-2 mt-6">
               <Text className="text-muted-foreground">
                 Don't have an account?
               </Text>

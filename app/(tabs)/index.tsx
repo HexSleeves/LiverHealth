@@ -124,7 +124,7 @@ export default function LiverHealthDashboard() {
             <Text className="text-lg font-semibold">Quick Actions</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="gap-y-3">
           <View className="flex-row gap-3">
             <Button
               variant="outline"
@@ -166,7 +166,7 @@ export default function LiverHealthDashboard() {
             <Text className="text-lg font-semibold">Today's Nutrition</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="gap-y-4">
           {Object.entries(todayProgress).map(([key, data]) => {
             const percentage = Math.min(
               (data.current / data.target) * 100,
@@ -193,7 +193,7 @@ export default function LiverHealthDashboard() {
             };
 
             return (
-              <View key={key} className="space-y-2">
+              <View key={key} className="gap-y-2">
                 <View className="flex-row justify-between items-center">
                   <Text
                     className={`font-medium capitalize ${getColorForNutrient(key)}`}
@@ -234,7 +234,7 @@ export default function LiverHealthDashboard() {
             <Text className="text-lg font-semibold">Today's Medications</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="gap-y-3">
           {medications.map((med) => (
             <View
               key={med.name}
@@ -276,7 +276,7 @@ export default function LiverHealthDashboard() {
             <Text className="text-lg font-semibold">Recent Lab Results</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="gap-y-3">
           <View className="flex-row justify-between items-center">
             <Text className="text-sm text-muted-foreground">
               Last updated {recentLabs.lastUpdate}
@@ -286,7 +286,7 @@ export default function LiverHealthDashboard() {
             </Button>
           </View>
 
-          <View className="space-y-2">
+          <View className="gap-y-2">
             <View className="flex-row justify-between items-center p-4 bg-card border border-border rounded-xl shadow-sm">
               <View>
                 <Text className="font-semibold text-foreground">ALT</Text>

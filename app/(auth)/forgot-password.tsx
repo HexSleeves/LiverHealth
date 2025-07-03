@@ -80,7 +80,7 @@ export default function ForgotPasswordScreen() {
           </View>
 
           <Card>
-            <CardContent className="space-y-4 pt-6">
+            <CardContent className="gap-y-4 pt-6">
               <Text className="text-center text-muted-foreground">
                 If you don't see the email in your inbox, check your spam
                 folder.
@@ -122,7 +122,7 @@ export default function ForgotPasswordScreen() {
 
         <Card>
           <CardHeader>
-            <View className="flex-row items-center space-x-2">
+            <View className="flex-row items-center gap-x-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -134,10 +134,10 @@ export default function ForgotPasswordScreen() {
               <CardTitle className="text-xl">Forgot Password</CardTitle>
             </View>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="gap-y-4">
             {/* Error Display */}
             {errors.root?.message && (
-              <View className="flex-row items-start space-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <View className="flex-row items-start gap-x-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
                 <AlertCircle size={16} className="text-destructive mt-0.5" />
                 <Text className="text-destructive text-sm flex-1">
                   {errors.root.message}
@@ -166,7 +166,7 @@ export default function ForgotPasswordScreen() {
               </Text>
             </Button>
 
-            <View className="flex-row justify-center items-center space-x-2 mt-6">
+            <View className="flex-row justify-center items-center gap-x-2 mt-6">
               <Text className="text-muted-foreground">
                 Remember your password?
               </Text>

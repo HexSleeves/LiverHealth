@@ -34,7 +34,7 @@ const DefaultErrorFallback: React.FC<ErrorFallbackProps> = ({
           Something went wrong
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="gap-y-4">
         <Text className="text-center text-muted-foreground">
           {error?.message || "An unexpected error occurred"}
         </Text>

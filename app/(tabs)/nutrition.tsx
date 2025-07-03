@@ -25,7 +25,7 @@ export default function NutritionScreen() {
             <Text className="text-lg font-semibold">Log Today's Meals</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className="gap-y-3">
           <Button className="w-full py-4">
             <Text className="font-semibold">Add Breakfast</Text>
           </Button>

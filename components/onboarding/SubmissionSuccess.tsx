@@ -156,20 +156,20 @@ export default function SubmissionSuccess({
 
         {/* Health Features */}
         <Animated.View
-          className="w-full space-y-3"
+          className="w-full gap-y-3"
           entering={FadeInDown.delay(700)
             .springify()
             .damping(20)
             .stiffness(100)}
         >
-          <View className="flex-row items-center justify-center space-x-2 bg-health-50 dark:bg-health-950/30 p-3 rounded-xl">
+          <View className="flex-row items-center justify-center gap-x-2 bg-health-50 dark:bg-health-950/30 p-3 rounded-xl">
             <Shield size={18} className="text-health-600" />
             <Text className="text-sm text-health-700 dark:text-health-300 font-medium">
               HIPAA Compliant & Secure
             </Text>
           </View>
 
-          <View className="flex-row items-center justify-center space-x-2 bg-health-50 dark:bg-health-950/30 p-3 rounded-xl">
+          <View className="flex-row items-center justify-center gap-x-2 bg-health-50 dark:bg-health-950/30 p-3 rounded-xl">
             <Heart size={18} className="text-health-600" />
             <Text className="text-sm text-health-700 dark:text-health-300 font-medium">
               Personalized Health Tracking

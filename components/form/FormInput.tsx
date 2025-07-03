@@ -60,7 +60,7 @@ export function FormInput<
   defaultValue,
 }: FormInputProps<TFieldValues, TName>) {
   return (
-    <View className="space-y-2">
+    <View className="gap-y-2">
       {label && (
         <Label htmlFor={String(name)}>
           {label}
@@ -93,7 +93,7 @@ export function FormInput<
         )}
       />
       {error && (
-        <View className="flex-row items-start space-x-2">
+        <View className="flex-row items-start gap-x-2">
           <AlertCircle size={14} className="text-destructive mt-0.5" />
           <Text className="text-destructive text-sm flex-1">
             {error.message}

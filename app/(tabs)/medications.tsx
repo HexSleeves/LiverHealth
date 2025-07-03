@@ -64,11 +64,11 @@ export default function MedicationsScreen() {
             <Text className="text-lg font-semibold">Today's Schedule</Text>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="gap-y-4">
           {medications.map((med) => (
             <View
               key={med.name}
-              className="p-4 bg-card border border-border rounded-xl shadow-sm space-y-3"
+              className="p-4 bg-card border border-border rounded-xl shadow-sm gap-y-3"
             >
               <View className="flex-row justify-between items-start">
                 <View className="flex-1">
@@ -77,7 +77,7 @@ export default function MedicationsScreen() {
                     {med.dosage} • {med.frequency}
                   </Text>
                 </View>
-                <View className="items-end space-y-1">
+                <View className="items-end gap-y-1">
                   {med.taken ? (
                     <Badge className="bg-green-100 flex-row items-center min-h-8 px-3 py-1">
                       <Check size={14} className="text-green-700" />
@@ -94,7 +94,7 @@ export default function MedicationsScreen() {
                 </View>
               </View>
 
-              <View className="space-y-2">
+              <View className="gap-y-2">
                 <Text className="text-sm text-muted-foreground">
                   <Text className="font-medium">Next dose:</Text> {med.nextDose}
                 </Text>
