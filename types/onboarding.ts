@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/v4";
 
 // Validation schemas
 export const personalInfoSchema = z.object({
@@ -22,12 +22,10 @@ export const personalInfoSchema = z.object({
       },
       { message: "Age must be between 13 and 120 years" }
     ),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address"),
   phone: z
     .string()
-    .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Phone format: (XXX) XXX-XXXX")
-    .optional()
-    .or(z.literal("")),
+    .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Phone format: (XXX) XXX-XXXX"),
   emergencyContact: z.object({
     fullName: z.string().min(1, "Emergency contact name is required"),
     relationship: z.string().min(1, "Relationship is required"),

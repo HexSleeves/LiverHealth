@@ -27,6 +27,7 @@ const ONBOARDING_COMPLETED_KEY = "@onboarding_completed";
 interface OnboardingState {
   currentStep: number;
   isSubmitting: boolean;
+  showSuccess: boolean;
   errors: Record<string, string>;
   personalInfo: Partial<PersonalInfo>;
   diseaseHistory: Partial<DiseaseHistory>;
@@ -42,6 +43,7 @@ interface OnboardingActions {
   nextStep: () => void;
   previousStep: () => void;
   handleSubmit: () => Promise<void>;
+  onSuccessComplete: () => void;
   addTestResult: () => void;
   removeTestResult: (index: number) => void;
   addMedication: () => void;
@@ -57,6 +59,7 @@ const OnboardingContext = createContext<
 const INITIAL_STATE: OnboardingState = {
   currentStep: 1,
   isSubmitting: false,
+  showSuccess: false,
   errors: {},
   personalInfo: {
     firstName: "",
@@ -280,16 +283,12 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       await AsyncStorage.removeItem(STORAGE_KEY);
       await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, "true");
 
-      Alert.alert(
-        "Success!",
-        "Your information has been submitted successfully. Welcome to your liver health journey!",
-        [
-          {
-            text: "Continue",
-            onPress: () => router.replace("/(tabs)"),
-          },
-        ]
-      );
+      // Show success screen instead of alert
+      setState((prev) => ({ 
+        ...prev, 
+        isSubmitting: false, 
+        showSuccess: true 
+      }));
     } catch (error: any) {
       Alert.alert(
         "Submission Error",
@@ -297,7 +296,6 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         [{ text: "OK" }]
       );
       console.error("Submission error:", error);
-    } finally {
       setState((prev) => ({ ...prev, isSubmitting: false }));
     }
   }, [
@@ -306,6 +304,11 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     state.medications,
     state.finalConfirmation,
   ]);
+
+  const onSuccessComplete = useCallback(() => {
+    setState((prev) => ({ ...prev, showSuccess: false }));
+    router.replace("/(tabs)");
+  }, []);
 
   const addTestResult = useCallback(() => {
     const newTestResult = {
@@ -381,6 +384,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       nextStep,
       previousStep,
       handleSubmit,
+      onSuccessComplete,
       addTestResult,
       removeTestResult,
       addMedication,
@@ -397,6 +401,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     nextStep,
     previousStep,
     handleSubmit,
+    onSuccessComplete,
     addTestResult,
     removeTestResult,
     addMedication,
@@ -424,6 +429,7 @@ export function useOnboardingData() {
   const {
     currentStep,
     isSubmitting,
+    showSuccess,
     errors,
     personalInfo,
     diseaseHistory,
@@ -434,6 +440,7 @@ export function useOnboardingData() {
   return {
     currentStep,
     isSubmitting,
+    showSuccess,
     errors,
     personalInfo,
     diseaseHistory,
@@ -458,6 +465,7 @@ export function useOnboardingActions() {
     nextStep,
     previousStep,
     handleSubmit,
+    onSuccessComplete,
     addTestResult,
     removeTestResult,
     addMedication,
@@ -474,6 +482,7 @@ export function useOnboardingActions() {
     nextStep,
     previousStep,
     handleSubmit,
+    onSuccessComplete,
     addTestResult,
     removeTestResult,
     addMedication,

@@ -45,13 +45,13 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={0}>
         <FormField
+          required
           label="First Name"
           value={personalInfo.firstName ?? ""}
           onChangeText={(text) =>
             setPersonalInfo({ ...personalInfo, firstName: text })
           }
           placeholder="Enter your first name"
-          required
           error={errors["firstName"]}
           accessibilityLabel="First name input"
         />
@@ -72,13 +72,13 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={2}>
         <FormField
+          required
           label="Last Name"
           value={personalInfo.lastName ?? ""}
           onChangeText={(text) =>
             setPersonalInfo({ ...personalInfo, lastName: text })
           }
           placeholder="Enter your last name"
-          required
           error={errors["lastName"]}
           accessibilityLabel="Last name input"
         />
@@ -86,6 +86,7 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={3}>
         <DatePicker
+          required
           label="Date of Birth"
           value={
             personalInfo.dateOfBirth ? new Date(personalInfo.dateOfBirth) : null
@@ -93,7 +94,6 @@ export default function PersonalInfoStep() {
           onChange={(date) =>
             setPersonalInfo({ ...personalInfo, dateOfBirth: date })
           }
-          required
           error={errors["dateOfBirth"]}
           maximumDate={new Date()}
           accessibilityLabel="Date of birth picker"
@@ -102,13 +102,13 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={4}>
         <FormField
+          required
           label="Email Address"
           value={personalInfo.email ?? ""}
           onChangeText={(text) =>
             setPersonalInfo({ ...personalInfo, email: text })
           }
           placeholder="Enter your email address"
-          required
           keyboardType="email-address"
           autoCapitalize="none"
           error={errors["email"]}
@@ -118,6 +118,7 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={5}>
         <FormField
+          required
           label="Phone Number"
           value={personalInfo.phone ?? ""}
           onChangeText={(text) => {
@@ -142,6 +143,7 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={7}>
         <FormField
+          required
           label="Full Name"
           value={personalInfo.emergencyContact?.fullName ?? ""}
           onChangeText={(text) =>
@@ -154,7 +156,6 @@ export default function PersonalInfoStep() {
             })
           }
           placeholder="Enter emergency contact name"
-          required
           error={errors["emergencyContact.fullName"]}
           accessibilityLabel="Emergency contact name input"
         />
@@ -162,6 +163,7 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={8}>
         <Dropdown
+          required
           label="Relationship"
           value={personalInfo.emergencyContact?.relationship ?? ""}
           options={RELATIONSHIPS.map((rel) => ({ value: rel, label: rel }))}
@@ -174,7 +176,6 @@ export default function PersonalInfoStep() {
               },
             })
           }
-          required
           error={errors["emergencyContact.relationship"]}
           accessibilityLabel="Emergency contact relationship dropdown"
         />
@@ -182,6 +183,7 @@ export default function PersonalInfoStep() {
 
       <StaggeredFormField delay={200} index={9}>
         <FormField
+          required
           label="Primary Phone"
           value={personalInfo.emergencyContact?.primaryPhone ?? ""}
           onChangeText={(text) => {
@@ -195,7 +197,6 @@ export default function PersonalInfoStep() {
             });
           }}
           placeholder="(XXX) XXX-XXXX"
-          required
           keyboardType="phone-pad"
           error={errors["emergencyContact.primaryPhone"]}
           accessibilityLabel="Emergency contact primary phone input"

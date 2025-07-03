@@ -47,14 +47,14 @@ export default function FormField({
       <Text className="text-base font-medium text-foreground mb-2">
         {label}
         {required && (
-          <Text className="text-base font-medium text-destructive"> *</Text>
+          <Text className="text-base font-medium text-medical-critical"> *</Text>
         )}
       </Text>
 
       <View className="relative">
         <Input
           className={cn(
-            error ? "border-destructive" : "",
+            error ? "border-medical-critical" : "focus:border-health-500",
             multiline && "min-h-[80px] py-3"
           )}
           value={value}
@@ -87,9 +87,9 @@ export default function FormField({
       </View>
 
       {error && (
-        <View className="flex-row items-center mt-2">
-          <AlertCircle size={16} className="text-destructive" />
-          <Text className="text-sm text-destructive ml-1.5 flex-1">
+        <View className="flex-row items-center mt-2 p-2 bg-medical-critical-light rounded-md">
+          <AlertCircle size={16} className="text-medical-critical" />
+          <Text className="text-sm text-medical-critical ml-1.5 flex-1">
             {error}
           </Text>
         </View>

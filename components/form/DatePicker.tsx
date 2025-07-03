@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Platform } from "react-native";
+import { View, TouchableOpacity, Platform, Modal } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Calendar, AlertCircle } from "~/lib/icons";
 import { format } from "date-fns";
@@ -155,23 +155,46 @@ export default function DatePicker({
         </View>
       )}
 
-      {showPicker && Platform.OS === "ios" && (
-        <View className="absolute inset-0 bg-black/50 justify-end z-50">
-          <View className="bg-background px-4 py-3 items-end">
-            <TouchableOpacity onPress={hideDatePicker}>
-              <Text className="text-base font-medium text-primary">Done</Text>
-            </TouchableOpacity>
+      {Platform.OS === "ios" && (
+        <Modal
+          visible={showPicker}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={hideDatePicker}
+        >
+          <View className="flex-1 justify-end bg-black/50">
+            <View className="bg-background">
+              <View className="px-4 py-3 border-b border-border flex-row justify-between items-center">
+                <TouchableOpacity onPress={hideDatePicker}>
+                  <Text className="text-base font-medium text-muted-foreground">
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+                <Text className="text-base font-semibold text-foreground">
+                  Select Date
+                </Text>
+                <TouchableOpacity onPress={hideDatePicker}>
+                  <Text className="text-base font-medium text-primary">
+                    Done
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View className="rounded-t-lg justify-center items-center">
+                <DateTimePicker
+                  value={value || new Date()}
+                  mode="date"
+                  display="spinner"
+                  onChange={handleDateChange}
+                  minimumDate={minimumDate}
+                  maximumDate={maximumDate}
+                  textColor="hsl(var(--foreground))"
+                  themeVariant={isDarkColorScheme ? "dark" : "light"}
+                />
+              </View>
+            </View>
           </View>
-          <DateTimePicker
-            value={value || new Date()}
-            mode="date"
-            display="spinner"
-            onChange={handleDateChange}
-            minimumDate={minimumDate}
-            maximumDate={maximumDate}
-            themeVariant={isDarkColorScheme ? "dark" : "light"}
-          />
-        </View>
+        </Modal>
       )}
 
       {showPicker && Platform.OS === "android" && (

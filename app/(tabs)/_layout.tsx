@@ -1,12 +1,10 @@
 import { Tabs } from "expo-router";
-import { ThemeToggle } from "~/components/ThemeToggle";
 import { Shield, Database, Bell, Settings } from "~/lib/icons";
 
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerRight: () => <ThemeToggle />,
         tabBarActiveTintColor: "hsl(var(--primary))",
         tabBarStyle: {
           paddingBottom: 8,

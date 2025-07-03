@@ -2,23 +2,30 @@ import React, { useEffect } from "react";
 import { View } from "react-native";
 import { router } from "expo-router";
 import { useOnboardingStatus } from "~/hooks/useOnboardingStatus";
+import { useUserContext } from "~/lib/context/UserContext";
 import { Text } from "~/components/ui/text";
 import { Shield } from "~/lib/icons";
 
 export default function RootIndex() {
   const { isLoading, hasCompletedOnboarding } = useOnboardingStatus();
+  const { userId } = useUserContext();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (hasCompletedOnboarding) {
-        // User has completed onboarding, go to main app
-        router.replace("/(tabs)");
-      } else {
-        // User hasn't completed onboarding, show welcome screen
-        router.replace("/(onboarding)/welcome");
-      }
+    if (isLoading) return;
+
+    // If the user is not authenticated, redirect to the login screen
+    if (!userId) {
+      router.replace("/(auth)/login");
+      return;
     }
-  }, [isLoading, hasCompletedOnboarding]);
+
+    // If the user is authenticated, check if they have completed onboarding
+    if (hasCompletedOnboarding) {
+      router.replace("/(tabs)");
+    } else {
+      router.replace("/(onboarding)/welcome");
+    }
+  }, [isLoading, hasCompletedOnboarding, userId]);
 
   // Show loading screen while checking onboarding status
   if (isLoading) {

@@ -26,13 +26,13 @@ export default function AnimatedWelcomeScreen() {
           entering={FadeInUp.delay(200).springify().damping(20).stiffness(100)}
         >
           <Animated.View
-            className="w-24 h-24 bg-primary/10 rounded-full items-center justify-center mb-6"
+            className="w-24 h-24 bg-health-100 dark:bg-health-900/20 rounded-full items-center justify-center mb-6 border-2 border-health-200 dark:border-health-800"
             entering={BounceIn.delay(400)
               .springify()
               .damping(15)
               .stiffness(200)}
           >
-            <Shield size={48} className="text-primary" />
+            <Shield size={48} className="text-health-600" />
           </Animated.View>
 
           <Animated.View
@@ -62,22 +62,22 @@ export default function AnimatedWelcomeScreen() {
 
         {/* Features Section */}
         <Animated.View
-          className="space-y-4 mb-8"
+          className="space-y-4 mb-8 gap-2"
           layout={LinearTransition.springify().damping(20).stiffness(100)}
         >
-          <AnimatedFeatureItem
+          <FeatureItem
             title="Personalized Dashboard"
             description="Track your symptoms, medications, and test results in one place"
             delay={1000}
           />
 
-          <AnimatedFeatureItem
+          <FeatureItem
             title="Medication Management"
             description="Never miss a dose with smart reminders and tracking"
             delay={1200}
           />
 
-          <AnimatedFeatureItem
+          <FeatureItem
             title="Expert Insights"
             description="Get personalized recommendations based on your health data"
             delay={1400}
@@ -86,7 +86,7 @@ export default function AnimatedWelcomeScreen() {
 
         {/* Action Buttons */}
         <Animated.View
-          className="space-y-3"
+          className="space-y-3 gap-2"
           entering={FadeInDown.delay(1600)
             .springify()
             .damping(20)
@@ -114,7 +114,7 @@ export default function AnimatedWelcomeScreen() {
   );
 }
 
-function AnimatedFeatureItem({
+function FeatureItem({
   title,
   description,
   delay = 0,
@@ -125,12 +125,12 @@ function AnimatedFeatureItem({
 }) {
   return (
     <Animated.View
-      className="flex-row items-start space-x-3 p-4 bg-card rounded-lg border border-border"
+      className="flex-row items-start space-x-3 p-4 bg-card rounded-lg border border-border gap-2"
       entering={SlideInLeft.delay(delay).springify().damping(20).stiffness(100)}
       layout={LinearTransition.springify().damping(20).stiffness(100)}
     >
       <Animated.View
-        className="w-2 h-2 bg-primary rounded-full mt-2"
+        className="w-2 h-2 bg-health-500 rounded-full mt-2"
         entering={BounceIn.delay(delay + 200)
           .springify()
           .damping(15)

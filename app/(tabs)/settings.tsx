@@ -35,7 +35,7 @@ function SettingsSection({
       <Text className="font-semibold text-lg text-foreground mb-3 px-4">
         {title}
       </Text>
-      <View className="bg-card rounded-xl overflow-hidden shadow-sm border border-border">
+      <View className="bg-card rounded-xl overflow-hidden shadow-md border border-border">
         {children}
       </View>
     </View>
@@ -170,11 +170,11 @@ export default function SettingsScreen() {
         contentContainerStyle={{ paddingBottom: 32 }}
       >
         {/* Header */}
-        <View className="px-4 pt-4 pb-6">
-          <Text className="font-bold text-3xl text-foreground mb-1">
+        <View className="px-4 pt-4 pb-8">
+          <Text className="font-bold text-3xl text-foreground mb-2">
             Settings
           </Text>
-          <Text className="font-normal text-base text-muted-foreground">
+          <Text className="font-normal text-base text-muted-foreground leading-relaxed">
             Customize your app experience
           </Text>
         </View>
@@ -182,7 +182,7 @@ export default function SettingsScreen() {
         {/* Profile Section */}
         <SettingsSection title="Account">
           <SettingsRow
-            icon={<CircleUserRound size={22} className="text-primary" />}
+            icon={<CircleUserRound size={24} className="text-primary" />}
             title="Profile"
             subtitle="Manage your personal information"
             onPress={handleProfilePress}
@@ -192,7 +192,7 @@ export default function SettingsScreen() {
         {/* Appearance Section */}
         <SettingsSection title="Appearance">
           <SettingsRow
-            icon={<Palette size={22} className="text-blue-500" />}
+            icon={<Palette size={24} className="text-blue-500" />}
             title="Theme"
             subtitle={`Currently using ${
               isDarkColorScheme ? "dark" : "light"
@@ -205,7 +205,7 @@ export default function SettingsScreen() {
         {/* Notifications Section */}
         <SettingsSection title="Notifications">
           <SettingsRow
-            icon={<Bell size={22} className="text-orange-500" />}
+            icon={<Bell size={24} className="text-orange-500" />}
             title="Push Notifications"
             subtitle="Receive important health reminders"
             rightElement={
@@ -217,7 +217,7 @@ export default function SettingsScreen() {
             showChevron={false}
           />
           <SettingsRow
-            icon={<Bell size={22} className="text-orange-400" />}
+            icon={<Bell size={24} className="text-orange-400" />}
             title="Medication Reminders"
             subtitle="Get notified about medications"
             rightElement={
@@ -235,13 +235,13 @@ export default function SettingsScreen() {
         {/* Privacy & Security Section */}
         <SettingsSection title="Privacy & Security">
           <SettingsRow
-            icon={<Shield size={22} className="text-green-500" />}
+            icon={<Shield size={24} className="text-green-500" />}
             title="Privacy Policy"
             subtitle="Learn how we protect your data"
             onPress={handlePrivacyPolicy}
           />
           <SettingsRow
-            icon={<Shield size={22} className="text-green-600" />}
+            icon={<Shield size={24} className="text-green-600" />}
             title="Biometric Authentication"
             subtitle="Use fingerprint or face ID"
             rightElement={
@@ -258,19 +258,19 @@ export default function SettingsScreen() {
         {/* Data Management Section */}
         <SettingsSection title="Data Management">
           <SettingsRow
-            icon={<Database size={22} className="text-purple-500" />}
+            icon={<Database size={24} className="text-purple-500" />}
             title="Data Storage"
             subtitle="Manage your health data"
             onPress={handleDataManagement}
           />
           <SettingsRow
-            icon={<FileText size={22} className="text-blue-600" />}
+            icon={<FileText size={24} className="text-blue-600" />}
             title="Export Data"
             subtitle="Download your health reports"
             onPress={handleExportData}
           />
           <SettingsRow
-            icon={<Database size={22} className="text-purple-400" />}
+            icon={<Database size={24} className="text-purple-400" />}
             title="Automatic Backup"
             subtitle="Backup data to secure cloud storage"
             rightElement={
@@ -284,13 +284,13 @@ export default function SettingsScreen() {
         {/* Support Section */}
         <SettingsSection title="Support">
           <SettingsRow
-            icon={<HelpCircle size={22} className="text-blue-500" />}
+            icon={<HelpCircle size={24} className="text-blue-500" />}
             title="Help & Support"
             subtitle="Get help with using the app"
             onPress={handleHelp}
           />
           <SettingsRow
-            icon={<Star size={22} className="text-yellow-500" />}
+            icon={<Star size={24} className="text-yellow-500" />}
             title="Rate Our App"
             subtitle="Help us improve with your feedback"
             onPress={handleRateApp}
@@ -301,7 +301,7 @@ export default function SettingsScreen() {
         {/* About Section */}
         <SettingsSection title="About">
           <SettingsRow
-            icon={<Info size={22} className="text-gray-500" />}
+            icon={<Info size={24} className="text-gray-500" />}
             title="About MyLiver App"
             subtitle="Version, terms, and app information"
             onPress={handleAbout}
@@ -313,13 +313,13 @@ export default function SettingsScreen() {
         {__DEV__ && (
           <SettingsSection title="Development Tools" className="border-dashed border-2 border-muted">
             <SettingsRow
-              icon={<Info size={22} className="text-blue-500" />}
+              icon={<Info size={24} className="text-blue-500" />}
               title="Test Onboarding"
               subtitle="Preview the welcome and onboarding flow"
               onPress={handleTestOnboarding}
             />
             <SettingsRow
-              icon={<Info size={22} className="text-red-500" />}
+              icon={<Info size={24} className="text-red-500" />}
               title="Reset Onboarding"
               subtitle="Clear onboarding status for testing"
               onPress={handleResetOnboarding}
@@ -329,7 +329,7 @@ export default function SettingsScreen() {
         )}
 
         {/* Footer */}
-        <View className="px-4 pt-4">
+        <View className="px-4 pt-6">
           <Text className="text-center text-sm text-muted-foreground">
             Made with ❤️ for your liver health
           </Text>

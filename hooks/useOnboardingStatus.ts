@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ONBOARDING_COMPLETED_KEY = '@onboarding_completed';
+const ONBOARDING_COMPLETED_KEY = "@onboarding_completed";
 
 export function useOnboardingStatus() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,9 +14,9 @@ export function useOnboardingStatus() {
   const checkOnboardingStatus = async () => {
     try {
       const completed = await AsyncStorage.getItem(ONBOARDING_COMPLETED_KEY);
-      setHasCompletedOnboarding(completed === 'true');
+      setHasCompletedOnboarding(completed === "true");
     } catch (error) {
-      console.error('Error checking onboarding status:', error);
+      console.error("Error checking onboarding status:", error);
       setHasCompletedOnboarding(false);
     } finally {
       setIsLoading(false);
@@ -25,10 +25,10 @@ export function useOnboardingStatus() {
 
   const markOnboardingCompleted = async () => {
     try {
-      await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, 'true');
+      await AsyncStorage.setItem(ONBOARDING_COMPLETED_KEY, "true");
       setHasCompletedOnboarding(true);
     } catch (error) {
-      console.error('Error marking onboarding completed:', error);
+      console.error("Error marking onboarding completed:", error);
     }
   };
 
@@ -37,7 +37,7 @@ export function useOnboardingStatus() {
       await AsyncStorage.removeItem(ONBOARDING_COMPLETED_KEY);
       setHasCompletedOnboarding(false);
     } catch (error) {
-      console.error('Error resetting onboarding:', error);
+      console.error("Error resetting onboarding:", error);
     }
   };
 

@@ -12,8 +12,16 @@
       "Bash(npx expo install:*)",
       "mcp__filesystem__edit_file",
       "mcp__filesystem__read_file",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "mcp__browermcp__browser_navigate",
+      "mcp__browermcp__browser_screenshot",
+      "mcp__browermcp__browser_click",
+      "mcp__browermcp__browser_press_key",
+      "WebFetch(domain:docs.expo.dev)",
+      "Bash(pkill:*)",
+      "mcp__browermcp__browser_wait"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "bypassPermissions"
   }
 }
