@@ -6,6 +6,7 @@ import {
   FieldError,
   FieldPath,
   FieldValues,
+  PathValue,
 } from "react-hook-form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -34,6 +35,8 @@ interface FormInputProps<
   error?: FieldError;
   disabled?: boolean;
   required?: boolean;
+  onChangeText?: (text: string) => string;
+  defaultValue?: PathValue<TFieldValues, TName>;
 }
 
 export function FormInput<
@@ -53,6 +56,8 @@ export function FormInput<
   error,
   disabled = false,
   required = false,
+  onChangeText,
+  defaultValue,
 }: FormInputProps<TFieldValues, TName>) {
   return (
     <View className="space-y-2">
@@ -65,13 +70,16 @@ export function FormInput<
       <Controller
         name={name}
         control={control}
-        rules={{ required }}
+        defaultValue={defaultValue}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
             id={String(name)}
             placeholder={placeholder}
             value={value || ""}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              const formattedText = onChangeText?.(text) ?? text;
+              onChange(formattedText);
+            }}
             onBlur={onBlur}
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
