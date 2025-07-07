@@ -1,6 +1,5 @@
 import { Tabs } from "expo-router";
 import { Platform } from "react-native";
-import { HeaderTitle } from "~/components/HeaderTitle";
 import { NAV_THEME } from "~/lib/constants";
 import { Bell, Home, Settings } from "~/lib/icons";
 import { useColorScheme } from "~/lib/useColorScheme";

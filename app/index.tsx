@@ -2,11 +2,14 @@ import { useAuth } from "@clerk/clerk-expo";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { View } from "react-native";
+import { LoadingSpinner } from "~/components/auth/LoadingSpinner";
 import { Text } from "~/components/ui/text";
 import { Shield } from "~/lib/icons";
 
 export default function RootIndex() {
 	const { isSignedIn, isLoaded } = useAuth();
+
+	console.log({ isSignedIn, isLoaded });
 
 	useEffect(() => {
 		if (!isLoaded) return;
@@ -38,5 +41,5 @@ export default function RootIndex() {
 	}
 
 	// This should not be reached due to the redirect in useEffect
-	return null;
+	return <LoadingSpinner />;
 }
