@@ -1,32 +1,32 @@
 {
-	"mcpServers": {
-		"Playwright": {
-			"command": "npx",
-			"args": ["-y", "@playwright/mcp@latest"]
-		},
-		"browsermcp": {
-			"command": "npx",
-			"args": ["@browsermcp/mcp@latest"]
-		},
-		"serena": {
-			"command": "uvx",
-			"args": [
-				"--from",
-				"git+https://github.com/oraios/serena",
-				"serena-mcp-server",
-				"--context",
-				"ide-assistant",
-				"--project",
-				"/Users/jacob.lecoq.ext/Projects/LiverHealthV2"
-			]
-		},
-		"convex": {
-			"command": "bunx",
-			"args": ["-y", "convex@latest", "mcp", "start"]
-		},
-		"ios-simulator": {
-			"command": "bunx",
-			"args": ["-y", "ios-simulator-mcp@latest"]
-		}
-	}
+  "mcpServers": {
+    "Playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": ["@browsermcp/mcp@latest"]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "/Users/jacob.lecoq.ext/Projects/LiverHealthV2"
+      ]
+    },
+    "convex": {
+      "command": "npx",
+      "args": ["-y", "convex@latest", "mcp", "start"]
+    },
+    "ios-simulator": {
+      "command": "npx",
+      "args": ["-y", "ios-simulator-mcp@latest"]
+    }
+  }
 }

@@ -44,6 +44,7 @@ HepatoTrack is a mobile application for iOS and Android designed for individuals
 | **Backend/API**   | Convex                                             |
 | **State Mgmt**    | Zustand (for persistent client-side state)         |
 | **Styling**       | NativeWind / Tailwind CSS                          |
+| **Form Handling** | React Hook Form                                    |
 
 ## 4. Core Features & Functionality (MVP v1.0)
 
