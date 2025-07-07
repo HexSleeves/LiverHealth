@@ -28,8 +28,8 @@ export default function RootIndex() {
 		return (
 			<View className="flex-1 bg-background items-center justify-center">
 				<View className="items-center">
-					<View className="w-16 h-16 bg-primary/10 rounded-full items-center justify-center mb-4">
-						<Shield size={32} className="text-primary" />
+					<View className="w-16 h-16 bg-blue-500/10 rounded-full items-center justify-center mb-4">
+						<Shield size={32} className="text-blue-500" />
 					</View>
 					<Text className="text-lg font-semibold text-foreground">
 						Liver Health

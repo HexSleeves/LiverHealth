@@ -93,24 +93,29 @@ export function useClerkAuth() {
 		setIsLoading(true);
 		setError(null);
 
-		try {
-			await signOut({ redirectUrl: "/(auth)/sign-in" });
-		} catch (err: unknown) {
-			if (isClerkAPIResponseError(err)) {
-				setError({
-					message:
-						err.errors?.[0]?.message || "Failed to sign out. Please try again.",
-					code: err.errors?.[0]?.code || "SIGNOUT_ERROR",
-				});
-			} else {
-				setError({
-					message: "Failed to sign out. Please try again.",
-					code: "SIGNOUT_ERROR",
-				});
-			}
-		} finally {
-			setIsLoading(false);
-		}
+		await signOut({ redirectUrl: "/(auth)/sign-in" })
+			.then(() => {
+				router.replace("/(auth)/sign-in");
+			})
+			.catch((err) => {
+				console.error(err);
+				if (isClerkAPIResponseError(err)) {
+					setError({
+						message:
+							err.errors?.[0]?.message ||
+							"Failed to sign out. Please try again.",
+						code: err.errors?.[0]?.code || "SIGNOUT_ERROR",
+					});
+				} else {
+					setError({
+						message: "Failed to sign out. Please try again.",
+						code: "SIGNOUT_ERROR",
+					});
+				}
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
 	}, [signOut]);
 
 	// Sign up a new user
@@ -170,38 +175,21 @@ export function useClerkAuth() {
 			setIsLoading(true);
 			setError(null);
 
-			try {
-				await signIn
-					.create({
-						strategy: "reset_password_email_code",
-						identifier: data.email,
-					})
-					.then((_) => {
-						setError(null);
-					})
-					.catch((err) => {
-						console.error("error", err.errors[0].longMessage);
-						setError(err.errors[0].longMessage);
-					});
-			} catch (err: unknown) {
-				console.error(err);
-
-				if (isClerkAPIResponseError(err)) {
+			await signIn
+				.create({
+					strategy: "reset_password_email_code",
+					identifier: data.email,
+				})
+				.then((_) => {
+					setError(null);
+				})
+				.catch((err) => {
+					console.error("error", err.errors[0].longMessage);
 					setError({
-						message:
-							err.errors?.[0]?.message ||
-							"Failed to send reset email. Please try again.",
-						code: err.errors?.[0]?.code || "RESET_ERROR",
+						message: err.errors[0].longMessage,
+						code: err.errors[0].code,
 					});
-				} else {
-					setError({
-						message: "Failed to send reset email. Please try again.",
-						code: "RESET_ERROR",
-					});
-				}
-			} finally {
-				setIsLoading(false);
-			}
+				});
 		},
 		[signIn],
 	);

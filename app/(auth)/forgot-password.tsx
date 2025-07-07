@@ -1,8 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
-import Animated, {
-	FadeInDown,
+import {
 	useAnimatedStyle,
 	useSharedValue,
 	withDelay,
@@ -12,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedButton } from "~/components/animations";
 import { AuthCard } from "~/components/auth/AuthCard";
 import { GoBackButton } from "~/components/auth/GoBackButton";
+import AuthError from "~/components/error/AuthError";
 import FormField from "~/components/form/FormField";
 import { Button } from "~/components/ui/button";
 import {
@@ -22,7 +22,7 @@ import { Text } from "~/components/ui/text";
 import { useAuthForm } from "~/hooks/auth/useAuthForm";
 import { useClerkAuth } from "~/hooks/auth/useClerkAuth";
 import { useSteps } from "~/hooks/useSteps";
-import { AlertCircle, Heart, Shield } from "~/lib/icons";
+import { Heart, Shield } from "~/lib/icons";
 import {
 	type ForgotPasswordFormData,
 	forgotPasswordSchema,
@@ -175,7 +175,6 @@ export default function ForgotPasswordScreen() {
 							title="Check Your Email"
 							contentClassName="gap-y-3"
 							logoIcon={<Heart size={48} className="text-white" />}
-							logoGradientColors={gradientPresets.orangeLogo.colors}
 							subtitle={`We've sent a password reset link to ${submittedEmail}`}
 							className="bg-white/90 backdrop-blur-sm border-orange-200 web:shadow-xl web:shadow-orange-500/10"
 						>
@@ -239,21 +238,14 @@ export default function ForgotPasswordScreen() {
 							title="Reset Your Password"
 							contentClassName="gap-y-3"
 							logoIcon={<Shield size={48} className="text-white" />}
-							logoGradientColors={gradientPresets.orangeLogo.colors}
 							subtitle={`Enter the verification code sent to ${submittedEmail}`}
 							className="bg-white/90 backdrop-blur-sm border-orange-200 web:shadow-xl web:shadow-orange-500/10"
 						>
 							{/* Error Display */}
 							{(resetForm.formState.errors.root?.message || error) && (
-								<Animated.View
-									entering={FadeInDown.duration(400)}
-									className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl"
-								>
-									<AlertCircle size={20} className="text-red-500 mt-0.5" />
-									<Text className="text-red-500 text-sm flex-1 font-medium">
-										{resetForm.formState.errors.root?.message || error?.message}
-									</Text>
-								</Animated.View>
+								<AuthError>
+									{resetForm.formState.errors.root?.message || error?.message}
+								</AuthError>
 							)}
 
 							{/* Verification Form */}
@@ -349,22 +341,16 @@ export default function ForgotPasswordScreen() {
 						logoSize="lg"
 						title="Forgot Password?"
 						contentClassName="gap-y-3"
+						logoBackgroundClassName="bg-orange-500 rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-orange-500/25"
 						logoIcon={<Shield size={48} className="text-white" />}
-						logoGradientColors={gradientPresets.orangeLogo.colors}
 						subtitle="Don't worry! Enter your email address and we'll send you a link to reset your password."
 						className="bg-white/90 backdrop-blur-sm border-orange-200 web:shadow-xl web:shadow-orange-500/10"
 					>
 						{/* Error Display */}
 						{(emailForm.formState.errors.root?.message || error) && (
-							<Animated.View
-								entering={FadeInDown.duration(400)}
-								className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl"
-							>
-								<AlertCircle size={20} className="text-red-500 mt-0.5" />
-								<Text className="text-red-500 text-sm flex-1 font-medium">
-									{emailForm.formState.errors.root?.message || error?.message}
-								</Text>
-							</Animated.View>
+							<AuthError>
+								{emailForm.formState.errors.root?.message || error?.message}
+							</AuthError>
 						)}
 
 						{/* Password Reset Form */}

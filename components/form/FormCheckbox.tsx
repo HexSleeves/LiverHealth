@@ -1,3 +1,4 @@
+import { isValidElement } from "react";
 import {
 	type Control,
 	Controller,
@@ -93,28 +94,32 @@ export default function FormCheckbox<
 				render={({ field: { onChange, value } }) => (
 					<View
 						className={cn(
-							"flex-row items-start gap-x-3 py-1",
+							"flex-row items-start py-1",
 							error &&
 								"px-2 py-2 bg-red-50/30 rounded-lg border border-red-200",
 							disabled && "opacity-50",
 						)}
 					>
 						{/* Checkbox */}
-						<Checkbox
-							checked={!!value}
-							onCheckedChange={onChange}
-							className="mt-0.5"
-							disabled={disabled}
-							accessibilityLabel={
-								accessibilityLabel ??
-								(typeof label === "string" ? label : "Checkbox")
-							}
-							accessibilityHint={accessibilityHint}
-						/>
+						<View className="pr-3">
+							<Checkbox
+								checked={value === true}
+								onCheckedChange={onChange}
+								className="mt-0.5"
+								disabled={disabled}
+								accessibilityLabel={
+									accessibilityLabel ??
+									(typeof label === "string" ? label : "Checkbox")
+								}
+								accessibilityHint={accessibilityHint}
+							/>
+						</View>
 
 						{/* Label */}
-						<View className="flex-1">
-							{typeof label === "string" ? (
+						<View className="flex-1" style={{ flexShrink: 1 }}>
+							{isValidElement(label) ? (
+								label
+							) : (
 								<Text
 									className={cn(
 										"text-sm text-gray-700 leading-5 font-medium",
@@ -127,8 +132,6 @@ export default function FormCheckbox<
 										<Text className="text-red-500 font-medium"> *</Text>
 									)}
 								</Text>
-							) : (
-								<View className="flex-1">{label}</View>
 							)}
 						</View>
 					</View>

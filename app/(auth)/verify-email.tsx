@@ -1,10 +1,10 @@
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AnimatedButton, animationPresets } from "~/components/animations";
+import { AnimatedButton } from "~/components/animations";
 import { AuthCard } from "~/components/auth/AuthCard";
+import AuthError from "~/components/error/AuthError";
 import FormField from "~/components/form/FormField";
 import { Button } from "~/components/ui/button";
 import {
@@ -14,7 +14,6 @@ import {
 import { Text } from "~/components/ui/text";
 import { useAuthForm } from "~/hooks/auth/useAuthForm";
 import { useClerkAuth } from "~/hooks/auth/useClerkAuth";
-import { AlertCircle } from "~/lib/icons";
 import {
 	type EmailVerificationFormData,
 	emailVerificationSchema,
@@ -90,19 +89,10 @@ export default function VerifyEmailScreen() {
 						title="Verify Your Email"
 						subtitle="Enter the verification code sent to your email address to complete your account setup."
 						contentClassName="gap-y-3"
-						logoGradientColors={gradientPresets.blueLogo.colors}
 					>
 						{/* Error Display */}
 						{(errors.root?.message || error) && (
-							<Animated.View
-								entering={animationPresets.errorMessage}
-								className="flex-row items-start gap-x-3 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-xl"
-							>
-								<AlertCircle size={20} className="text-red-500 mt-0.5" />
-								<Text className="text-red-500 text-sm flex-1 font-medium">
-									{errors.root?.message || error?.message}
-								</Text>
-							</Animated.View>
+							<AuthError>{errors.root?.message || error?.message}</AuthError>
 						)}
 
 						{/* Verification Form */}

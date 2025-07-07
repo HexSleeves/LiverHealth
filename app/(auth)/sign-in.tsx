@@ -1,9 +1,9 @@
 import { Link } from "expo-router";
 import { View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedButton } from "~/components/animations";
 import { AuthCard } from "~/components/auth/AuthCard";
+import AuthError from "~/components/error/AuthError";
 import FormField from "~/components/form/FormField";
 import { Button } from "~/components/ui/button";
 import {
@@ -13,7 +13,7 @@ import {
 import { Text } from "~/components/ui/text";
 import { useAuthForm } from "~/hooks/auth/useAuthForm";
 import { useClerkAuth } from "~/hooks/auth/useClerkAuth";
-import { AlertCircle, Heart, Shield } from "~/lib/icons";
+import { Heart, Shield } from "~/lib/icons";
 import { type LoginFormData, loginSchema } from "~/types/auth";
 
 export default function SignInScreen() {
@@ -48,19 +48,10 @@ export default function SignInScreen() {
 						title="Welcome Back"
 						subtitle="Sign in to continue tracking your liver health"
 						contentClassName="gap-y-3"
-						logoGradientColors={gradientPresets.blueLogo.colors}
 					>
 						{/* Error Display */}
 						{(errors.root?.message || error) && (
-							<Animated.View
-								entering={FadeInDown.duration(400)}
-								className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl"
-							>
-								<AlertCircle size={20} className="text-red-500 mt-0.5" />
-								<Text className="text-red-500 text-sm flex-1 font-medium">
-									{errors.root?.message || error?.message}
-								</Text>
-							</Animated.View>
+							<AuthError>{errors.root?.message || error?.message}</AuthError>
 						)}
 
 						{/* Auth Form */}

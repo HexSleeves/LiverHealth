@@ -1,9 +1,9 @@
 import { View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedButton } from "~/components/animations";
 import { AuthCard } from "~/components/auth/AuthCard";
 import { GoBackButton } from "~/components/auth/GoBackButton";
+import AuthError from "~/components/error/AuthError";
 import FormCheckbox from "~/components/form/FormCheckbox";
 import FormField from "~/components/form/FormField";
 import {
@@ -13,7 +13,7 @@ import {
 import { Text } from "~/components/ui/text";
 import { useAuthForm } from "~/hooks/auth/useAuthForm";
 import { useClerkAuth } from "~/hooks/auth/useClerkAuth";
-import { AlertCircle, CircleUserRound, Heart, Shield } from "~/lib/icons";
+import { CircleUserRound, Heart, Shield } from "~/lib/icons";
 import { type SignupFormData, signupSchema } from "~/types/auth";
 
 export default function SignUpScreen() {
@@ -62,19 +62,10 @@ export default function SignUpScreen() {
 						title="Create Account"
 						subtitle="Join HepatoTrack to start tracking your health"
 						contentClassName="gap-y-3"
-						logoGradientColors={gradientPresets.blueLogo.colors}
 					>
 						{/* Error Display */}
 						{(errors.root?.message || error) && (
-							<Animated.View
-								entering={FadeInDown.duration(400)}
-								className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl"
-							>
-								<AlertCircle size={20} className="text-red-500 mt-0.5" />
-								<Text className="text-red-500 text-sm flex-1 font-medium">
-									{errors.root?.message || error?.message}
-								</Text>
-							</Animated.View>
+							<AuthError>{errors.root?.message || error?.message}</AuthError>
 						)}
 
 						{/* Registration Form */}
@@ -128,8 +119,10 @@ export default function SignUpScreen() {
 
 							{/* Terms and Conditions */}
 							<FormCheckbox
+								required
 								control={control}
 								name="termsAccepted"
+								error={errors.termsAccepted}
 								label={
 									<Text className="text-sm text-gray-700 leading-5 font-medium">
 										I agree to the{" "}
@@ -143,7 +136,6 @@ export default function SignUpScreen() {
 										<Text className="text-red-500 font-medium"> *</Text>
 									</Text>
 								}
-								error={errors.termsAccepted}
 							/>
 
 							{/* Sign Up Button */}
