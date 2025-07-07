@@ -48,7 +48,16 @@ export const forgotPasswordSchema = z.object({
   email: emailSchema.shape.email,
 });
 
-// Email Verification Schema
+// Email Verification Schema (for sign-up)
+export const emailVerificationSchema = z.object({
+  code: z
+    .string()
+    .min(6, "Verification code must be 6 digits")
+    .max(6, "Verification code must be 6 digits")
+    .regex(/^\d{6}$/, "Verification code must contain only numbers"),
+});
+
+// Password Reset Schema
 export const resetPasswordSchema = z.object({
   code: z
     .string()
@@ -63,4 +72,5 @@ export const resetPasswordSchema = z.object({
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+export type EmailVerificationFormData = z.infer<typeof emailVerificationSchema>;
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;

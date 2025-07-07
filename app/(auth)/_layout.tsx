@@ -17,7 +17,6 @@ export default function AuthRoutesLayout() {
 			screenOptions={{
 				headerShown: false,
 				gestureEnabled: true,
-				// animation: "slide_from_right",
 				animationDuration: 300,
 			}}
 		>
@@ -33,31 +32,25 @@ export default function AuthRoutesLayout() {
 				name="sign-in"
 				options={{
 					gestureEnabled: true,
-					// animation: "slide_from_right",
-					animationDuration: 300,
 				}}
 			/>
 			<Stack.Screen
 				name="sign-up"
 				options={{
 					gestureEnabled: true,
-					// animation: "slide_from_right",
-					animationDuration: 300,
 				}}
 			/>
 			<Stack.Screen
 				name="forgot-password"
 				options={{
 					gestureEnabled: true,
-					// animation: "slide_from_right",
 					animationDuration: 300,
 				}}
 			/>
 			<Stack.Screen
-				name="verify-email"
+				name="reset-password"
 				options={{
 					gestureEnabled: true,
-					// animation: "slide_from_bottom",
 					animationDuration: 400,
 				}}
 			/>

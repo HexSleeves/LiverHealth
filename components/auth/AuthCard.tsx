@@ -14,6 +14,7 @@ interface AuthCardProps {
 	className?: string;
 	headerClassName?: string;
 	contentClassName?: string;
+	logoBackgroundClassName?: string;
 }
 
 export function AuthCard({
@@ -26,6 +27,7 @@ export function AuthCard({
 	className,
 	headerClassName,
 	contentClassName,
+	logoBackgroundClassName,
 }: AuthCardProps) {
 	const logoSizes = {
 		sm: { container: "w-16 h-16", icon: 32 },
@@ -43,7 +45,7 @@ export function AuthCard({
 					<View
 						className={cn(
 							currentLogoSize.container,
-							"bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-blue-500/25",
+							logoBackgroundClassName || "bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-blue-500/25",
 						)}
 					>
 						{logoIcon || (

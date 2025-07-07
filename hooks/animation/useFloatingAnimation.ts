@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { ViewStyle } from "react-native";
-import { Easing } from "react-native";
 import {
+  Easing,
   type SharedValue,
   useAnimatedStyle,
   useSharedValue,

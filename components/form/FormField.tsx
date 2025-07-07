@@ -93,7 +93,7 @@ export default function FormField<
 	} = props;
 
 	return (
-		<View className="mb-4">
+		<View className="mb-3">
 			{/* Optional Label */}
 			{showLabel && label && (
 				<Text className="text-base font-medium text-gray-800 mb-2">
@@ -107,9 +107,9 @@ export default function FormField<
 			{/* Input Container */}
 			<View
 				className={cn(
-					"flex-row items-center bg-white rounded-xl px-4 py-4 web:shadow-sm",
-					error && "border border-red-300",
-					multiline && "items-start py-3",
+					"flex-row items-center bg-white rounded-xl px-4 h-12 border-2 border-gray-200 web:shadow-sm focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100",
+					error && "border-red-300 focus-within:border-red-400 focus-within:ring-red-100",
+					multiline && "items-start h-auto py-3",
 					className,
 				)}
 			>

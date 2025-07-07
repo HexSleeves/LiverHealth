@@ -1,27 +1,30 @@
 {
-	"permissions": {
-		"allow": [
-			"mcp__filesystem__list_allowed_directories",
-			"mcp__filesystem__directory_tree",
-			"mcp__filesystem__search_files",
-			"mcp__filesystem__list_directory",
-			"mcp__filesystem__read_multiple_files",
-			"mcp__filesystem__create_directory",
-			"mcp__filesystem__write_file",
-			"Bash(npm install:*)",
-			"Bash(npx expo install:*)",
-			"mcp__filesystem__edit_file",
-			"mcp__filesystem__read_file",
-			"Bash(npm run dev:*)",
-			"mcp__browermcp__browser_navigate",
-			"mcp__browermcp__browser_screenshot",
-			"mcp__browermcp__browser_click",
-			"mcp__browermcp__browser_press_key",
-			"WebFetch(domain:docs.expo.dev)",
-			"Bash(pkill:*)",
-			"mcp__browermcp__browser_wait"
-		],
-		"deny": [],
-		"defaultMode": "bypassPermissions"
-	}
+  "permissions": {
+    "allow": [
+      "mcp__filesystem__list_allowed_directories",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__search_files",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__filesystem__create_directory",
+      "mcp__filesystem__write_file",
+      "Bash(npm install:*)",
+      "Bash(npx expo install:*)",
+      "mcp__filesystem__edit_file",
+      "mcp__filesystem__read_file",
+      "Bash(npm run dev:*)",
+      "mcp__browermcp__browser_navigate",
+      "mcp__browermcp__browser_screenshot",
+      "mcp__browermcp__browser_click",
+      "mcp__browermcp__browser_press_key",
+      "WebFetch(domain:docs.expo.dev)",
+      "Bash(pkill:*)",
+      "mcp__browermcp__browser_wait",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(npx tsc:*)"
+    ],
+    "deny": [],
+    "defaultMode": "bypassPermissions"
+  }
 }

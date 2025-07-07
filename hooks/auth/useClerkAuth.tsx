@@ -173,7 +173,6 @@ export function useClerkAuth() {
 					identifier: data.email,
 				})
 				.then((_) => {
-					router.push("/(auth)/verify-email");
 					setError(null);
 				})
 				.catch((err) => {

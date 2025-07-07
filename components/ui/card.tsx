@@ -27,10 +27,7 @@ function CardHeader({
 	ref?: React.RefObject<View>;
 }) {
 	return (
-		<View
-			className={cn("flex flex-col space-y-1.5 p-6", className)}
-			{...props}
-		/>
+		<View className={cn("flex flex-col gap-y-1.5 p-6", className)} {...props} />
 	);
 }
 

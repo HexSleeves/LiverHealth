@@ -8,10 +8,8 @@ import Animated, {
 	withSpring,
 } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-	AnimatedButton,
-	AnimatedIconWithBackground,
-} from "~/components/animations";
+import { AnimatedButton } from "~/components/animations";
+import { AuthCard } from "~/components/auth/AuthCard";
 import FormField from "~/components/form/FormField";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
@@ -59,7 +57,6 @@ export default function SignUpScreen() {
 					email: data.email,
 					password: data.password,
 				});
-				router.push("/(auth)/verify-email");
 			} catch (err) {
 				console.log(err);
 				// Error is handled by useClerkAuth hook
@@ -78,184 +75,147 @@ export default function SignUpScreen() {
 		setAcceptedTerms(!acceptedTerms);
 	};
 
-	const handleLogin = () => {
-		router.push("/(auth)/sign-in");
-	};
-
 	return (
-		<SafeAreaView className="flex-1 bg-gray-50">
-			<View className="flex-1 px-6 justify-center py-8">
-				{/* Header Illustration */}
-				<View className="items-center">
-					<View className="w-50 h-32 justify-center items-center relative">
-						{/* Health Illustration */}
-						<AnimatedIconWithBackground
-							size={60}
-							Icon={CircleUserRound}
-							disableAnimations={true}
-							className="text-blue-600"
-							backgroundClassName="bg-blue-50 rounded-full p-5"
+		<SafeAreaView className="flex-1 bg-gradient-to-br from-blue-50 to-blue-100">
+			<View className="flex-1 justify-center px-6 py-8">
+				<AuthCard
+					logoSize="lg"
+					logoIcon={<CircleUserRound size={48} className="text-white" />}
+					title="Create Account"
+					subtitle="Join HepatoTrack to start tracking your health"
+					contentClassName="gap-y-3"
+				>
+					{/* Error Display */}
+					{(errors.root?.message || error) && (
+						<Animated.View
+							entering={FadeInDown.duration(400)}
+							className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl"
+						>
+							<AlertCircle size={20} className="text-red-500 mt-0.5" />
+							<Text className="text-red-500 text-sm flex-1 font-medium">
+								{errors.root?.message || error?.message}
+							</Text>
+						</Animated.View>
+					)}
+
+					{/* Registration Form */}
+					<View className="gap-y-3">
+						{/* Name Input */}
+						<FormField
+							control={control}
+							name="name"
+							placeholder="Full Name"
+							autoCapitalize="words"
+							autoComplete="name"
+							error={errors.name}
+							icon={<CircleUserRound size={20} className="text-gray-400" />}
 						/>
 
-						{/* <View className="absolute w-full h-full">
-							<Animated.View
-								entering={FadeInUp.delay(400).duration(600)}
-								className="absolute w-4 h-4 bg-blue-100 rounded-full top-3 left-6"
-							/>
-							<Animated.View
-								entering={FadeInUp.delay(600).duration(600)}
-								className="absolute w-3 h-3 bg-purple-100 rounded-full bottom-6 right-8"
-							/>
-							<Animated.View
-								entering={FadeInUp.delay(500).duration(600)}
-								className="absolute w-4 h-4 justify-center items-center top-8 right-4"
+						{/* Email Input */}
+						<FormField
+							control={control}
+							name="email"
+							placeholder="Email"
+							keyboardType="email-address"
+							autoCapitalize="none"
+							autoComplete="email"
+							error={errors.email}
+							icon={<Heart size={20} className="text-gray-400" />}
+						/>
+
+						{/* Password Input */}
+						<FormField
+							control={control}
+							name="password"
+							placeholder="Password"
+							secureTextEntry={true}
+							autoCapitalize="none"
+							autoComplete="new-password"
+							error={errors.password}
+							icon={<Shield size={20} className="text-gray-400" />}
+						/>
+
+						{/* Confirm Password Input */}
+						<FormField
+							control={control}
+							name="confirmPassword"
+							placeholder="Confirm Password"
+							secureTextEntry={true}
+							autoCapitalize="none"
+							autoComplete="new-password"
+							error={errors.confirmPassword}
+							icon={<Shield size={20} className="text-gray-400" />}
+						/>
+
+						{/* Terms and Conditions */}
+						<View className="flex-row items-start gap-x-3 py-1">
+							<Button
+								variant="ghost"
+								size="icon"
+								onPress={handleCheckboxPress}
+								className="w-6 h-6 p-0 mt-0.5"
 							>
-								<Text className="text-blue-500 text-sm font-bold">+</Text>
-							</Animated.View>
-							<Animated.View
-								entering={FadeInUp.delay(700).duration(600)}
-								className="absolute w-4 h-4 justify-center items-center bottom-3 left-4"
-							>
-								<Text className="text-blue-500 text-sm font-bold">+</Text>
-							</Animated.View>
-						</View> */}
-					</View>
-				</View>
-
-				<Text className="text-3xl font-bold text-foreground mb-2 text-center">
-					Create Account
-				</Text>
-				<Text className="text-base text-muted-foreground text-center mb-8">
-					Join MyLiverApp to start tracking your health
-				</Text>
-
-				{/* Error Display */}
-				{(errors.root?.message || error) && (
-					<Animated.View
-						entering={FadeInDown.duration(400)}
-						className="flex-row items-start gap-x-3 p-4 bg-red-50 border border-red-200 rounded-xl mb-6"
-					>
-						<AlertCircle size={20} className="text-red-500 mt-0.5" />
-						<Text className="text-red-500 text-sm flex-1 font-medium">
-							{errors.root?.message || error?.message}
-						</Text>
-					</Animated.View>
-				)}
-
-				{/* Name Input */}
-
-				<FormField
-					control={control}
-					name="name"
-					placeholder="Full Name"
-					autoCapitalize="words"
-					autoComplete="name"
-					error={errors.name}
-					icon={<CircleUserRound size={20} className="text-gray-400" />}
-				/>
-
-				{/* Email Input */}
-
-				<FormField
-					control={control}
-					name="email"
-					placeholder="Email"
-					keyboardType="email-address"
-					autoCapitalize="none"
-					autoComplete="email"
-					error={errors.email}
-					icon={<Heart size={20} className="text-gray-400" />}
-				/>
-
-				{/* Password Input */}
-
-				<FormField
-					control={control}
-					name="password"
-					placeholder="Password"
-					secureTextEntry={true}
-					autoCapitalize="none"
-					autoComplete="new-password"
-					error={errors.password}
-					icon={<Shield size={20} className="text-gray-400" />}
-				/>
-
-				{/* Confirm Password Input */}
-
-				<FormField
-					control={control}
-					name="confirmPassword"
-					placeholder="Confirm Password"
-					secureTextEntry={true}
-					autoCapitalize="none"
-					autoComplete="new-password"
-					error={errors.confirmPassword}
-					icon={<Shield size={20} className="text-gray-400" />}
-				/>
-
-				{/* Terms and Conditions */}
-				<View className="flex-row items-start gap-x-3 py-1 mb-6">
-					<Button
-						variant="ghost"
-						size="icon"
-						onPress={handleCheckboxPress}
-						className="w-6 h-6 p-0 mt-0.5"
-					>
-						<Animated.View
-							style={checkboxAnimatedStyle}
-							className={`w-5 h-5 border-2 rounded ${
-								acceptedTerms
-									? "bg-blue-500 border-blue-500"
-									: "border-gray-300"
-							} items-center justify-center`}
-						>
-							{acceptedTerms && (
-								<Animated.Text
-									entering={FadeInDown.duration(200)}
-									className="text-white text-xs font-bold"
+								<Animated.View
+									style={checkboxAnimatedStyle}
+									className={`w-5 h-5 border-2 rounded ${
+										acceptedTerms
+											? "bg-blue-500 border-blue-500"
+											: "border-gray-300"
+									} items-center justify-center`}
 								>
-									✓
-								</Animated.Text>
-							)}
-						</Animated.View>
-					</Button>
+									{acceptedTerms && (
+										<Animated.Text
+											entering={FadeInDown.duration(200)}
+											className="text-white text-xs font-bold"
+										>
+											✓
+										</Animated.Text>
+									)}
+								</Animated.View>
+							</Button>
 
-					<View className="flex-1">
-						<Text className="text-sm text-gray-600 leading-5">
-							I agree to the{" "}
-							<Text className="text-blue-600 font-medium">
-								Terms of Service
-							</Text>{" "}
-							and{" "}
-							<Text className="text-blue-600 font-medium">Privacy Policy</Text>
-						</Text>
+							<View className="flex-1">
+								<Text className="text-sm text-gray-600 leading-5">
+									I agree to the{" "}
+									<Text className="text-blue-600 font-medium">
+										Terms of Service
+									</Text>{" "}
+									and{" "}
+									<Text className="text-blue-600 font-medium">Privacy Policy</Text>
+								</Text>
+							</View>
+						</View>
+
+						{/* Sign Up Button */}
+						<AnimatedButton
+							onPress={handleSubmit}
+							disabled={isLoading || isSubmitting || !acceptedTerms}
+							className={`rounded-xl h-12 items-center web:shadow-lg web:shadow-blue-500/25 ${
+								isLoading || isSubmitting || !acceptedTerms
+									? "bg-gray-400"
+									: "bg-blue-500 hover:bg-blue-600 active:bg-blue-600"
+							}`}
+						>
+							<Text className="text-white text-base font-semibold">
+								{isLoading || isSubmitting ? "Creating Account..." : "Sign Up"}
+							</Text>
+						</AnimatedButton>
 					</View>
-				</View>
 
-				{/* Sign Up Button */}
-				<AnimatedButton
-					onPress={handleSubmit}
-					disabled={isLoading || isSubmitting || !acceptedTerms}
-					className={`rounded-xl h-14 items-center mb-6 web:shadow-lg ${
-						isLoading || isSubmitting || !acceptedTerms
-							? "bg-gray-400"
-							: "bg-blue-500 hover:bg-blue-600 active:bg-blue-600"
-					}`}
-				>
-					<Text className="text-white text-base font-semibold">
-						{isLoading || isSubmitting ? "Creating Account..." : "Sign Up"}
-					</Text>
-				</AnimatedButton>
-
-				{/* Login Link */}
-				<View className="flex-row justify-center items-center">
-					<Text className="text-gray-500 text-sm">
-						Already have an account?{" "}
-					</Text>
-					<Button variant="ghost" onPress={handleLogin} className="p-0 h-auto">
-						<Text className="text-blue-500 text-sm font-semibold">Login</Text>
-					</Button>
-				</View>
+					{/* Login Link */}
+					<View className="flex-row justify-center items-center">
+						<Text className="text-gray-500 text-sm">
+							Already have an account?{" "}
+						</Text>
+						<Button
+							variant="ghost"
+							onPress={() => router.back()}
+							className="p-0 h-auto"
+						>
+							<Text className="text-blue-500 text-sm font-semibold">Login</Text>
+						</Button>
+					</View>
+				</AuthCard>
 			</View>
 		</SafeAreaView>
 	);
