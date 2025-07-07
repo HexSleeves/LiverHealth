@@ -1,16 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
 import {
-	type Control,
 	type DefaultValues,
-	type FieldErrors,
-	type Path,
-	type PathValue,
-	type UseFormClearErrors,
-	type UseFormRegister,
-	type UseFormReset,
-	type UseFormSetError,
-	type UseFormSetValue,
+	type UseFormReturn,
 	useForm,
 } from "react-hook-form";
 import type { ZodType } from "zod/v4";
@@ -34,21 +26,9 @@ interface UseAuthFormProps<T extends AuthFormData> {
 	defaultValues?: DefaultValues<T>;
 }
 
-interface UseAuthFormReturn<T extends AuthFormData> {
-	control: Control<T>;
-
-	formState: {
-		errors: FieldErrors<T>;
-		isSubmitting: boolean;
-		isValid: boolean;
-	};
-
-	reset: UseFormReset<T>;
+interface UseAuthFormReturn<T extends AuthFormData>
+	extends Omit<UseFormReturn<T>, "handleSubmit"> {
 	handleSubmit: () => void;
-	register: UseFormRegister<T>;
-	setValue: UseFormSetValue<T>;
-	setError: UseFormSetError<T>;
-	clearErrors: UseFormClearErrors<T>;
 }
 
 export function useAuthForm<T extends AuthFormData>({
@@ -62,16 +42,7 @@ export function useAuthForm<T extends AuthFormData>({
 		resolver: zodResolver(schema),
 	});
 
-	const {
-		reset,
-		control,
-		setValue,
-		formState,
-		clearErrors,
-		setError,
-		register,
-		handleSubmit: rhfHandleSubmit,
-	} = form;
+	const { handleSubmit: rhfHandleSubmit } = form;
 
 	const handleSubmit = useCallback(() => {
 		rhfHandleSubmit(async (data) => {
@@ -84,19 +55,5 @@ export function useAuthForm<T extends AuthFormData>({
 		})();
 	}, [rhfHandleSubmit, onSubmit]);
 
-	return {
-		reset,
-		control,
-		register,
-		handleSubmit,
-		clearErrors,
-		setError,
-		setValue: (name: Path<T>, value: PathValue<T, Path<T>>) =>
-			setValue(name, value),
-		formState: {
-			errors: formState.errors,
-			isSubmitting: formState.isSubmitting,
-			isValid: formState.isValid,
-		},
-	};
+	return { ...form, handleSubmit };
 }

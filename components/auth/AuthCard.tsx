@@ -1,5 +1,6 @@
 import { View } from "react-native";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { GradientBackground } from "~/components/ui/gradient-background";
 import { Text } from "~/components/ui/text";
 import { Heart } from "~/lib/icons";
 import { cn } from "~/lib/utils";
@@ -15,6 +16,7 @@ interface AuthCardProps {
 	headerClassName?: string;
 	contentClassName?: string;
 	logoBackgroundClassName?: string;
+	logoGradientColors?: readonly [string, string, ...string[]];
 }
 
 export function AuthCard({
@@ -28,6 +30,7 @@ export function AuthCard({
 	headerClassName,
 	contentClassName,
 	logoBackgroundClassName,
+	logoGradientColors,
 }: AuthCardProps) {
 	const logoSizes = {
 		sm: { container: "w-16 h-16", icon: 32 },
@@ -42,16 +45,31 @@ export function AuthCard({
 			{/* App Branding Header */}
 			{showLogo && (
 				<View className="items-center mb-6">
-					<View
-						className={cn(
-							currentLogoSize.container,
-							logoBackgroundClassName || "bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-blue-500/25",
-						)}
-					>
-						{logoIcon || (
-							<Heart size={currentLogoSize.icon} className="text-white" />
-						)}
-					</View>
+					{logoGradientColors ? (
+						<GradientBackground
+							colors={logoGradientColors}
+							className={cn(
+								currentLogoSize.container,
+								"rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-blue-500/25",
+							)}
+						>
+							{logoIcon || (
+								<Heart size={currentLogoSize.icon} className="text-white" />
+							)}
+						</GradientBackground>
+					) : (
+						<View
+							className={cn(
+								currentLogoSize.container,
+								logoBackgroundClassName ||
+									"bg-blue-500 rounded-3xl items-center justify-center mb-3 web:shadow-lg web:shadow-blue-500/25",
+							)}
+						>
+							{logoIcon || (
+								<Heart size={currentLogoSize.icon} className="text-white" />
+							)}
+						</View>
+					)}
 					<Text className="text-3xl font-bold text-gray-800 mb-1">
 						HepatoTrack
 					</Text>

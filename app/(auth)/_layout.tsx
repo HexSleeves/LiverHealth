@@ -48,7 +48,7 @@ export default function AuthRoutesLayout() {
 				}}
 			/>
 			<Stack.Screen
-				name="reset-password"
+				name="verify-email"
 				options={{
 					gestureEnabled: true,
 					animationDuration: 400,

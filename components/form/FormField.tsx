@@ -60,6 +60,7 @@ interface FormFieldProps<
 	readonly required?: boolean;
 	readonly secureTextEntry?: boolean;
 	readonly showLabel?: boolean;
+	readonly textContentType?: TextInputProps["textContentType"];
 }
 
 export default function FormField<
@@ -90,6 +91,8 @@ export default function FormField<
 		autoCapitalize = "sentences",
 		showLabel = false,
 		className,
+		textContentType,
+		...restProps
 	} = props;
 
 	return (
@@ -108,7 +111,8 @@ export default function FormField<
 			<View
 				className={cn(
 					"flex-row items-center bg-white rounded-xl px-4 h-12 border-2 border-gray-200 web:shadow-sm focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100",
-					error && "border-red-300 focus-within:border-red-400 focus-within:ring-red-100",
+					error &&
+						"border-red-300 focus-within:border-red-400 focus-within:ring-red-100",
 					multiline && "items-start h-auto py-3",
 					className,
 				)}
@@ -139,6 +143,8 @@ export default function FormField<
 							accessibilityLabel={accessibilityLabel ?? label}
 							accessibilityHint={accessibilityHint}
 							defaultValue={defaultValue}
+							textContentType={textContentType}
+							{...restProps}
 						/>
 					)}
 				/>

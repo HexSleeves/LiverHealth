@@ -5,7 +5,7 @@ import {
 	useSignUp,
 } from "@clerk/clerk-expo";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export interface AuthError {
 	message: string;
@@ -34,18 +34,19 @@ export interface ResetPasswordData {
 }
 
 export function useClerkAuth() {
-	const clerkAuth = useAuth();
-	const { signIn, setActive } = useSignIn();
-	const { signUp, setActive: setActiveSignUp } = useSignUp();
-
 	const [isLoading, setIsLoading] = useState(false);
 	const [secondFactor, setSecondFactor] = useState(false);
 	const [error, setError] = useState<AuthError | null>(null);
 
+	const { signIn, setActive } = useSignIn();
+	const { signUp, setActive: setActiveSignUp } = useSignUp();
+
+	const clerkAuth = useAuth();
 	const { signOut, ...clerkAuthData } = clerkAuth;
 
-	const clearError = () => setError(null);
+	const clearError = useCallback(() => setError(null), []);
 
+	// Sign in a user
 	const handleSignIn = async (data: SignInData) => {
 		if (!signIn) return;
 
@@ -58,8 +59,6 @@ export function useClerkAuth() {
 				password: data.password,
 			});
 
-			console.log(result);
-
 			if (result.status === "complete") {
 				await setActive({ session: result.createdSessionId });
 				router.replace("/(tabs)");
@@ -70,7 +69,7 @@ export function useClerkAuth() {
 				});
 			}
 		} catch (err: unknown) {
-			console.log(err);
+			console.error(err);
 
 			if (isClerkAPIResponseError(err)) {
 				setError({
@@ -89,13 +88,13 @@ export function useClerkAuth() {
 		}
 	};
 
-	const handleSignOut = async () => {
+	// Sign out the user
+	const handleSignOut = useCallback(async () => {
 		setIsLoading(true);
 		setError(null);
 
 		try {
-			await signOut();
-			router.replace("/(auth)");
+			await signOut({ redirectUrl: "/(auth)/sign-in" });
 		} catch (err: unknown) {
 			if (isClerkAPIResponseError(err)) {
 				setError({
@@ -112,135 +111,145 @@ export function useClerkAuth() {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, [signOut]);
 
-	const handleSignUp = async (data: SignUpData) => {
-		if (!signUp) return;
+	// Sign up a new user
+	const handleSignUp = useCallback(
+		async (data: SignUpData) => {
+			if (!signUp) return;
 
-		setIsLoading(true);
-		setError(null);
+			setIsLoading(true);
+			setError(null);
 
-		try {
-			const result = await signUp.create({
-				emailAddress: data.email,
-				password: data.password,
-				firstName: data.firstName,
-				lastName: data.lastName,
-			});
-
-			if (result.status === "missing_requirements") {
-				// Email verification required
-				await signUp.prepareEmailAddressVerification({
-					strategy: "email_code",
+			try {
+				const result = await signUp.create({
+					emailAddress: data.email,
+					password: data.password,
+					firstName: data.firstName,
+					lastName: data.lastName,
 				});
-				router.push("/(auth)/verify-email");
-			} else if (result.status === "complete") {
-				await setActiveSignUp({ session: result.createdSessionId });
-				router.replace("/(tabs)");
+
+				if (result.status === "missing_requirements") {
+					// Email verification required
+					await signUp.prepareEmailAddressVerification({
+						strategy: "email_code",
+					});
+					router.push("/(auth)/verify-email");
+				} else if (result.status === "complete") {
+					await setActiveSignUp({ session: result.createdSessionId });
+					router.replace("/(tabs)");
+				}
+			} catch (err: unknown) {
+				console.error(err);
+
+				if (isClerkAPIResponseError(err)) {
+					setError({
+						message:
+							err.errors?.[0]?.message ||
+							"Failed to create account. Please try again.",
+						code: err.errors?.[0]?.code || "SIGNUP_ERROR",
+					});
+				} else {
+					setError({
+						message: "Failed to create account. Please try again.",
+						code: "SIGNUP_ERROR",
+					});
+				}
+			} finally {
+				setIsLoading(false);
 			}
-		} catch (err: unknown) {
-			console.log(err);
-
-			if (isClerkAPIResponseError(err)) {
-				setError({
-					message:
-						err.errors?.[0]?.message ||
-						"Failed to create account. Please try again.",
-					code: err.errors?.[0]?.code || "SIGNUP_ERROR",
-				});
-			} else {
-				setError({
-					message: "Failed to create account. Please try again.",
-					code: "SIGNUP_ERROR",
-				});
-			}
-		} finally {
-			setIsLoading(false);
-		}
-	};
+		},
+		[signUp, setActiveSignUp],
+	);
 
 	// Send the password reset email with a 6-digit code
-	const sendPasswordResetEmail = async (data: ForgotPasswordData) => {
-		if (!signIn) return;
+	const sendPasswordResetEmail = useCallback(
+		async (data: ForgotPasswordData) => {
+			if (!signIn) return;
 
-		setIsLoading(true);
-		setError(null);
+			setIsLoading(true);
+			setError(null);
 
-		try {
-			await signIn
-				.create({
-					strategy: "reset_password_email_code",
-					identifier: data.email,
-				})
-				.then((_) => {
-					setError(null);
-				})
-				.catch((err) => {
-					console.error("error", err.errors[0].longMessage);
-					setError(err.errors[0].longMessage);
-				});
-		} catch (err: unknown) {
-			console.log(err);
+			try {
+				await signIn
+					.create({
+						strategy: "reset_password_email_code",
+						identifier: data.email,
+					})
+					.then((_) => {
+						setError(null);
+					})
+					.catch((err) => {
+						console.error("error", err.errors[0].longMessage);
+						setError(err.errors[0].longMessage);
+					});
+			} catch (err: unknown) {
+				console.error(err);
 
-			if (isClerkAPIResponseError(err)) {
-				setError({
-					message:
-						err.errors?.[0]?.message ||
-						"Failed to send reset email. Please try again.",
-					code: err.errors?.[0]?.code || "RESET_ERROR",
-				});
-			} else {
-				setError({
-					message: "Failed to send reset email. Please try again.",
-					code: "RESET_ERROR",
-				});
+				if (isClerkAPIResponseError(err)) {
+					setError({
+						message:
+							err.errors?.[0]?.message ||
+							"Failed to send reset email. Please try again.",
+						code: err.errors?.[0]?.code || "RESET_ERROR",
+					});
+				} else {
+					setError({
+						message: "Failed to send reset email. Please try again.",
+						code: "RESET_ERROR",
+					});
+				}
+			} finally {
+				setIsLoading(false);
 			}
-		} finally {
-			setIsLoading(false);
-		}
-	};
+		},
+		[signIn],
+	);
 
 	// Reset the user's password
 	// Upon successful reset, the user will be signed in and redirected to the home page
-	const resetPasswordWithCode = async (data: ResetPasswordData) => {
-		if (!signUp) return;
+	const resetPasswordWithCode = useCallback(
+		async (data: ResetPasswordData) => {
+			if (!signUp) return;
 
-		setIsLoading(true);
-		setError(null);
+			setIsLoading(true);
+			setError(null);
 
-		await signIn
-			?.attemptFirstFactor({
-				strategy: "reset_password_email_code",
-				code: data.code,
-				password: data.password,
-			})
-			.then((result) => {
-				// Check if 2FA is required
-				if (result.status === "needs_second_factor") {
-					setSecondFactor(true);
-					setError(null);
-				} else if (result.status === "complete") {
-					// Set the active session to
-					// the newly created session (user is now signed in)
-					setActive({ session: result.createdSessionId });
-					setError(null);
-				} else {
-					console.log(result);
-				}
-			})
-			.catch((err) => {
-				console.error("error", err.errors[0].longMessage);
-				setError({
-					message:
-						err.errors?.[0]?.message ||
-						"Invalid verification code. Please try again.",
-					code: err.errors?.[0]?.code || "VERIFICATION_ERROR",
+			await signIn
+				?.attemptFirstFactor({
+					strategy: "reset_password_email_code",
+					code: data.code,
+					password: data.password,
+				})
+				.then((result) => {
+					// Check if 2FA is required
+					if (result.status === "needs_second_factor") {
+						setSecondFactor(true);
+						setError(null);
+					} else if (result.status === "complete") {
+						// Set the active session to
+						// the newly created session (user is now signed in)
+						setActive({ session: result.createdSessionId });
+						setError(null);
+					} else {
+						console.log(JSON.stringify(result, null, 2));
+					}
+				})
+				.catch((err) => {
+					console.error("error", err.errors[0].longMessage);
+					setError({
+						message:
+							err.errors?.[0]?.message ||
+							"Invalid verification code. Please try again.",
+						code: err.errors?.[0]?.code || "VERIFICATION_ERROR",
+					});
+				})
+				.finally(() => {
+					setIsLoading(false);
 				});
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
-	};
+		},
+		[setActive, signIn?.attemptFirstFactor, signUp],
+	);
 
 	return {
 		...clerkAuthData,
